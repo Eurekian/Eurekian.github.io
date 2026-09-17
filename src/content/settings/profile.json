@@ -1,0 +1,7 @@
+{
+	"name": "Eurekian",
+	"tagline": "数学 · 物理 · 计算 · 文章",
+	"bio": "欢迎来到我的个人作品站。这里发布我的数学笔记、物理与计算项目、代码作品，以及个人文章讲解。站点正在建设中，内容将陆续上线。",
+	"research": ["数学", "物理", "科学计算"],
+	"socials": [{ "label": "GitHub", "url": "https://github.com/Eurekian" }]
+}

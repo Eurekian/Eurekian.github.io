@@ -22,12 +22,25 @@ jobs:
         # actions/checkout v7.0.1
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
-      - name: Install, build, and upload site
-        # withastro/action v6.1.3
-        uses: withastro/action@3eafd002e65cc31b4f0eae0bb05450d521562247
+      - name: Setup Node
+        # actions/setup-node v7.0.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          # P6 起将在构建后运行 Pagefind 建索引，当前仅构建
-          path: ./
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site and search index
+        # copy-katex → astro build → pagefind --site dist（npm run build 串起三步）
+        run: npm run build
+
+      - name: Upload artifact
+        # actions/upload-pages-artifact v5.0.0
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: dist
 
   deploy:
     needs: build

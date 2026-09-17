@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "node scripts/copy-katex.mjs && astro dev",
-    "build": "node scripts/copy-katex.mjs && astro build",
+    "build": "node scripts/copy-katex.mjs && astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -25,5 +25,8 @@
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "pagefind": "^1.5.2"
   }
 }

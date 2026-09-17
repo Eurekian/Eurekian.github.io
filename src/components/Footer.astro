@@ -5,7 +5,7 @@ const today = new Date();
 const profile = await getEntry('settings', 'profile');
 ---
 
-<footer>
+<footer data-pagefind-ignore>
 	<span>&copy; {today.getFullYear()} {profile.data.name}</span>
 	<div class="links">
 		<a href="/rss.xml">RSS</a>

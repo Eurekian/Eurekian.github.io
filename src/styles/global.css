@@ -172,6 +172,69 @@ hr {
 	margin: 2em 0;
 }
 
+/* 代码块双主题（Shiki 输出 CSS 变量，随站点深浅色切换） */
+.astro-code,
+.astro-code span {
+	color: var(--shiki-dark, inherit);
+	background-color: var(--shiki-dark-bg, transparent);
+}
+:root:not([data-theme='dark']) .astro-code,
+:root:not([data-theme='dark']) .astro-code span {
+	color: var(--shiki-light, inherit);
+	background-color: var(--shiki-light-bg, transparent);
+}
+
+/* KaTeX：长公式允许横向滚动，不撑破布局 */
+.prose .katex-display {
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding: 0.2em 0;
+}
+
+/* 定理/定义/提示框（:::theorem title="..." 等容器） */
+.thm {
+	position: relative;
+	margin: 1.5em 0;
+	padding: 0.9em 1.2em 0.7em;
+	border-left: 3px solid var(--accent);
+	border-radius: 0 8px 8px 0;
+	background: var(--accent-weak);
+}
+.thm::before {
+	content: attr(data-label);
+	display: block;
+	margin-bottom: 0.4em;
+	font-weight: 700;
+	font-size: 0.88em;
+	color: var(--accent);
+}
+.thm-definition {
+	border-left-color: #2e8b57;
+}
+.thm-definition::before {
+	color: #2e8b57;
+}
+.thm-example {
+	border-left-color: #8a6d3b;
+}
+.thm-example::before {
+	color: #8a6d3b;
+}
+.thm-note,
+.thm-remark {
+	border-left-color: #708090;
+}
+.thm-note::before,
+.thm-remark::before {
+	color: #708090;
+}
+.thm-warning {
+	border-left-color: #b35900;
+}
+.thm-warning::before {
+	color: #b35900;
+}
+
 button {
 	font-family: inherit;
 	cursor: pointer;

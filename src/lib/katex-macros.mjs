@@ -11,8 +11,9 @@ export const katexMacros = {
 	'\\comm': '\\left[ #1, #2 \\right]',
 	'\\abs': '\\left\\lvert #1 \\right\\rvert',
 	'\\norm': '\\left\\lVert #1 \\right\\rVert',
-	// 微分
+	// 微分（\dv{f}{x} 为导数；\dvop{t} 为单独的 d/dt 算子，对应 physics 宏包的单参数 \dv{t}）
 	'\\dv': '\\frac{\\mathrm{d} #1}{\\mathrm{d} #2}',
+	'\\dvop': '\\frac{\\mathrm{d}}{\\mathrm{d} #1}',
 	'\\pdv': '\\frac{\\partial #1}{\\partial #2}',
 	'\\dd': '\\,\\mathrm{d}',
 	// 矢量分析（\div 与 LaTeX 内建除号冲突，故用 \divergence）

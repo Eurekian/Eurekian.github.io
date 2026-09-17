@@ -1,0 +1,80 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	href: string;
+	entry: CollectionEntry<'math' | 'physics' | 'code' | 'essays'>;
+	collectionLabel: string;
+}
+
+const { href, entry, collectionLabel } = Astro.props;
+const { title, description, pubDate, tags, math } = entry.data;
+---
+
+<a class="card" href={href} data-tags={tags.join(' ')}>
+	<div class="meta">
+		<span class="label">{collectionLabel}</span>
+		<time datetime={pubDate.toISOString()}><FormattedDate date={pubDate} /></time>
+		{math && <span class="badge" title="含数学公式">∑</span>}
+	</div>
+	<h3>{title}</h3>
+	<p>{description}</p>
+	{tags.length > 0 && <div class="tags">{tags.map((t) => <span>{t}</span>)}</div>}
+</a>
+
+<style>
+	.card {
+		display: block;
+		padding: 1.1em 1.3em;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		background: var(--bg);
+		text-decoration: none;
+		color: var(--text);
+		transition:
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
+	}
+	.card:hover {
+		border-color: var(--accent);
+		box-shadow: var(--box-shadow);
+	}
+	.meta {
+		display: flex;
+		align-items: center;
+		gap: 0.7em;
+		font-size: 0.82em;
+		color: var(--text-soft);
+	}
+	.label {
+		color: var(--accent);
+		font-weight: 600;
+	}
+	.badge {
+		font-weight: 700;
+	}
+	h3 {
+		margin: 0.35em 0 0.3em;
+		font-size: 1.15em;
+		line-height: 1.4;
+	}
+	p {
+		margin: 0 0 0.5em;
+		color: var(--text-soft);
+		font-size: 0.92em;
+		line-height: 1.6;
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4em;
+	}
+	.tags span {
+		padding: 0.05em 0.6em;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		font-size: 0.78em;
+		color: var(--text-soft);
+	}
+</style>

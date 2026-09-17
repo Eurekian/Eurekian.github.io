@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import WorkCard from '../components/WorkCard.astro';
+import { COLLECTIONS, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+	return COLLECTIONS.map((c) => ({ params: { collection: c.name } }));
+}
+
+const { collection } = Astro.params;
+const meta = COLLECTIONS.find((c) => c.name === collection)!;
+const works = (await getCollection(meta.name, ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const tags = [...new Set(works.flatMap((w) => w.data.tags))].sort();
+---
+
+<Base title={`${meta.label} · ${SITE_TITLE}`} description={meta.description}>
+	<h1>{meta.label}</h1>
+	<p class="desc">{meta.description}</p>
+
+	{
+		tags.length > 0 && (
+			<div class="tag-filter" role="group" aria-label="按标签筛选">
+				<button type="button" class="tag-chip active" data-tag="all">
+					全部
+				</button>
+				{tags.map((t) => (
+					<button type="button" class="tag-chip" data-tag={t}>
+						{t}
+					</button>
+				))}
+			</div>
+		)
+	}
+
+	<div class="list" id="work-list">
+		{
+			works.map((w) => (
+				<WorkCard href={`/${meta.name}/${w.id}/`} entry={w} collectionLabel={meta.label} />
+			))
+		}
+		{works.length === 0 && <p class="empty">该分类暂无公开作品。</p>}
+	</div>
+</Base>
+
+<script>
+	// 列表页标签筛选：纯客户端，零依赖
+	const group = document.querySelector('.tag-filter');
+	const cards = document.querySelectorAll('#work-list .card');
+	group?.addEventListener('click', (event) => {
+		const target = event.target instanceof Element ? target_closest(event.target) : null;
+		if (!target) return;
+		const tag = target.dataset.tag;
+		if (!tag) return;
+		group.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === target));
+		cards.forEach((card) => {
+			const tags = (card.getAttribute('data-tags') ?? '').split(' ').filter(Boolean);
+			(card as HTMLElement).style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
+		});
+	});
+	function target_closest(el: Element): HTMLElement | null {
+		return el.closest('button[data-tag]');
+	}
+</script>
+
+<style>
+	h1 {
+		font-size: 1.8em;
+		margin-bottom: 0.2em;
+	}
+	.desc {
+		color: var(--text-soft);
+		margin-bottom: 1.2em;
+	}
+	.tag-filter {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5em;
+		margin-bottom: 1.3em;
+	}
+	.tag-chip {
+		padding: 0.15em 0.9em;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--bg);
+		color: var(--text-soft);
+		font-size: 0.85em;
+	}
+	.tag-chip:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.tag-chip.active {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: var(--bg);
+	}
+	.list {
+		display: grid;
+		gap: 1em;
+	}
+	.empty {
+		color: var(--text-soft);
+		text-align: center;
+		padding: 2em 0;
+	}
+</style>

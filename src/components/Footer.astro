@@ -1,16 +1,17 @@
 ---
 import { getEntry } from 'astro:content';
+
 const today = new Date();
 const profile = await getEntry('settings', 'profile');
 ---
 
 <footer>
-	&copy; {today.getFullYear()} {profile.data.name}. 保留所有权利.
-	<div class="social-links">
+	<span>&copy; {today.getFullYear()} {profile.data.name}</span>
+	<div class="links">
+		<a href="/rss.xml">RSS</a>
 		{
 			profile.data.socials.map((s) => (
 				<a href={s.url} target="_blank" rel="noopener noreferrer">
-					<span class="sr-only">{s.label}</span>
 					{s.label}
 				</a>
 			))
@@ -19,22 +20,23 @@ const profile = await getEntry('settings', 'profile');
 </footer>
 <style>
 	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		padding: 1.8em 1em;
+		border-top: 1px solid var(--border);
+		color: var(--text-soft);
 		text-align: center;
+		font-size: 0.9em;
 	}
-	.social-links {
+	.links {
 		display: flex;
 		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
+		gap: 1.2em;
+		margin-top: 0.5em;
 	}
-	.social-links a {
+	.links a {
+		color: var(--text-soft);
 		text-decoration: none;
-		color: rgb(var(--gray));
 	}
-	.social-links a:hover {
-		color: rgb(var(--gray-dark));
+	.links a:hover {
+		color: var(--accent);
 	}
 </style>

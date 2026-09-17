@@ -1,50 +1,146 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import WorkCard from '../components/WorkCard.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { COLLECTIONS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection, getEntry } from 'astro:content';
 
-const profile = await getEntry('settings', 'profile');
+const profile = (await getEntry('settings', 'profile')).data;
+
+const groups = await Promise.all(
+	COLLECTIONS.map(async (c) => ({
+		...c,
+		entries: (await getCollection(c.name, ({ data }) => !data.draft)).sort(
+			(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+		),
+	}))
+);
+
+const recent = groups
+	.flatMap((g) => g.entries.map((entry) => ({ entry, group: g })))
+	.sort((a, b) => b.entry.data.pubDate.valueOf() - a.entry.data.pubDate.valueOf())
+	.slice(0, 5);
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main class="hero">
-			<h1>{profile.data.name}</h1>
-			<p class="tagline">{profile.data.tagline}</p>
-			<p>{profile.data.bio}</p>
-			<p class="status">站点搭建中：分类页面与作品内容将在后续阶段陆续上线。</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Base wide title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<section class="hero">
+		<h1>{profile.name}</h1>
+		<p class="tagline">{profile.tagline}</p>
+		<p class="bio">{profile.bio}</p>
+		{
+			profile.socials.length > 0 && (
+				<div class="socials">
+					{profile.socials.map((s) => (
+						<a href={s.url} target="_blank" rel="noopener noreferrer">
+							{s.label}
+						</a>
+					))}
+				</div>
+			)
+		}
+	</section>
+
+	<section aria-label="作品分类">
+		<div class="grid">
+			{
+				groups.map((g) => (
+					<a class="cat" href={`/${g.name}`}>
+						<div class="cat-label">{g.label}</div>
+						<div class="cat-desc">{g.description}</div>
+						<div class="cat-count">{g.entries.length} 篇作品</div>
+					</a>
+				))
+			}
+		</div>
+	</section>
+
+	{
+		recent.length > 0 && (
+			<section aria-label="最近作品">
+				<h2>最近作品</h2>
+				<div class="list">
+					{recent.map(({ entry, group }) => (
+						<WorkCard
+							href={`/${group.name}/${entry.id}/`}
+							entry={entry}
+							collectionLabel={group.label}
+						/>
+					))}
+				</div>
+			</section>
+		)
+	}
+</Base>
 
 <style>
-	main {
-		margin: auto;
-		padding: 2em 1em;
-		max-width: 46em;
-	}
 	.hero {
 		text-align: center;
+		padding: 2em 0 1em;
 	}
-	h1 {
-		margin-bottom: 0.2em;
+	.hero h1 {
+		margin-bottom: 0.15em;
 	}
 	.tagline {
-		color: rgb(var(--gray));
-		font-size: 1.1em;
-		margin-bottom: 1.5em;
+		color: var(--accent);
+		font-size: 1.05em;
+		margin-bottom: 1em;
+		letter-spacing: 0.06em;
 	}
-	.status {
-		margin-top: 2em;
-		color: rgb(var(--gray));
+	.bio {
+		color: var(--text-soft);
+		max-width: 36em;
+		margin: 0 auto 1em;
+	}
+	.socials {
+		display: flex;
+		justify-content: center;
+		gap: 1.2em;
 		font-size: 0.9em;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(13em, 1fr));
+		gap: 1em;
+		margin: 1em 0 2.5em;
+	}
+	.cat {
+		padding: 1.2em 1.3em;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		background: var(--bg);
+		text-decoration: none;
+		color: var(--text);
+		transition:
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
+	}
+	.cat:hover {
+		border-color: var(--accent);
+		box-shadow: var(--box-shadow);
+	}
+	.cat-label {
+		font-size: 1.25em;
+		font-weight: 700;
+		margin-bottom: 0.3em;
+	}
+	.cat-desc {
+		color: var(--text-soft);
+		font-size: 0.86em;
+		line-height: 1.6;
+		min-height: 2.8em;
+	}
+	.cat-count {
+		margin-top: 0.6em;
+		font-size: 0.8em;
+		color: var(--accent);
+	}
+	section h2 {
+		font-size: 1.3em;
+		margin: 1.2em 0 0.8em;
+	}
+	.list {
+		display: grid;
+		gap: 1em;
+		margin-bottom: 1.5em;
 	}
 </style>

@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<Base title={`页面不存在 · ${SITE_TITLE}`} description="页面不存在">
+	<div class="lost">
+		<div class="code">404</div>
+		<p>页面不存在或已被移动。</p>
+		<p>
+			<a href="/">← 返回首页</a>
+		</p>
+	</div>
+</Base>
+
+<style>
+	.lost {
+		text-align: center;
+		padding: 3em 0;
+	}
+	.code {
+		font-size: 4em;
+		font-weight: 700;
+		color: var(--accent);
+		line-height: 1;
+		margin-bottom: 0.4em;
+	}
+	.lost p {
+		color: var(--text-soft);
+	}
+</style>

@@ -1,32 +1,84 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import Base from '../layouts/Base.astro';
+import { SITE_TITLE } from '../consts';
 import { getEntry } from 'astro:content';
 
-const profile = await getEntry('settings', 'profile');
-const d = profile.data;
+const d = (await getEntry('settings', 'profile')).data;
 ---
 
-<Layout title={`关于 · ${d.name}`} description={d.tagline} pubDate={new Date('2026-09-18')}>
-	<h2>{d.name}</h2>
-	<p>{d.bio}</p>
-	{d.research.length > 0 && <p>方向：{d.research.join(' / ')}</p>}
-	<ul>
+<Base title={`关于 · ${SITE_TITLE}`} description={d.tagline}>
+	<h1>关于</h1>
+	<div class="card">
+		<h2>{d.name}</h2>
+		<p class="tagline">{d.tagline}</p>
+		<p>{d.bio}</p>
 		{
-			d.socials.map((s) => (
-				<li>
-					<a href={s.url} target="_blank" rel="noopener noreferrer">
-						{s.label}
-					</a>
-				</li>
-			))
+			d.research.length > 0 && (
+				<div class="chips" aria-label="方向">
+					{d.research.map((r) => (
+						<span>{r}</span>
+					))}
+				</div>
+			)
 		}
-	</ul>
-	<p class="note">（个人信息为占位内容，搭建完成后可在管理后台随时修改）</p>
-</Layout>
+		{
+			(d.email || d.socials.length > 0) && (
+				<div class="contact">
+					{d.email && (
+						<a href={`mailto:${d.email}`}>{d.email}</a>
+					)}
+					{d.socials.map((s) => (
+						<a href={s.url} target="_blank" rel="noopener noreferrer">
+							{s.label}
+						</a>
+					))}
+				</div>
+			)
+		}
+	</div>
+	<p class="note">个人信息可在管理后台随时修改，修改后站点自动更新。</p>
+</Base>
 
 <style>
+	h1 {
+		font-size: 1.8em;
+		margin-bottom: 0.8em;
+	}
+	.card {
+		padding: 1.6em 1.8em;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+	}
+	.card h2 {
+		margin-bottom: 0.1em;
+	}
+	.tagline {
+		color: var(--accent);
+		margin-bottom: 1em;
+	}
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5em;
+		margin: 0.8em 0;
+	}
+	.chips span {
+		padding: 0.1em 0.8em;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		font-size: 0.85em;
+		color: var(--text-soft);
+	}
+	.contact {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.2em;
+		margin-top: 1em;
+		font-size: 0.95em;
+	}
 	.note {
-		color: rgb(var(--gray));
-		font-size: 0.9em;
+		margin-top: 1.5em;
+		color: var(--text-soft);
+		font-size: 0.85em;
 	}
 </style>

@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content';
+import { COLLECTIONS } from '../../consts';
+import Work from '../../layouts/Work.astro';
+
+export async function getStaticPaths() {
+	const pages = [];
+	for (const c of COLLECTIONS) {
+		const sorted = (await getCollection(c.name, ({ data }) => !data.draft)).sort(
+			(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+		);
+		sorted.forEach((entry, i) => {
+			pages.push({
+				params: { collection: c.name, slug: entry.id },
+				props: {
+					collection: c.name,
+					label: c.label,
+					entry,
+					prev: sorted[i - 1] ?? null,
+					next: sorted[i + 1] ?? null,
+				},
+			});
+		});
+	}
+	return pages;
+}
+
+const { entry, collection, label, prev, next } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Work entry={entry} collection={collection} label={label} prev={prev} next={next}>
+	<Content />
+</Work>

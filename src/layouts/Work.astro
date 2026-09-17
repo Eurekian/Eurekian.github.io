@@ -1,0 +1,244 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+import Base from './Base.astro';
+
+type WorkEntry = CollectionEntry<'math' | 'physics' | 'code' | 'essays'>;
+
+interface Props {
+	entry: WorkEntry;
+	collection: string;
+	label: string;
+	prev: WorkEntry | null;
+	next: WorkEntry | null;
+}
+
+const { entry, collection, label, prev, next } = Astro.props;
+const { title, description, pubDate, updatedDate, tags, math, githubUrl, pdfUrl } = entry.data;
+---
+
+<Base title={title} description={description}>
+	<article>
+		<header class="head">
+			<div class="meta">
+				<a class="label" href={`/${collection}`}>{label}</a>
+				<span aria-hidden="true">·</span>
+				<FormattedDate date={pubDate} />
+				{
+					updatedDate && (
+						<span class="updated">
+							（更新于 <FormattedDate date={updatedDate} />）
+						</span>
+					)
+				}
+			</div>
+			<h1>{title}</h1>
+			{
+				tags.length > 0 && (
+					<div class="tags">
+						{tags.map((t) => (
+							<span>{t}</span>
+						))}
+					</div>
+				)
+			}
+			{
+				(githubUrl || pdfUrl) && (
+					<div class="links">
+						{githubUrl && (
+							<a class="btn" href={githubUrl} target="_blank" rel="noopener noreferrer">
+								查看源码
+							</a>
+						)}
+						{pdfUrl && <a class="btn" href={pdfUrl}>下载 PDF</a>}
+					</div>
+				)
+			}
+		</header>
+
+		<div class="body">
+			<aside class="toc" aria-label="目录">
+				<div class="toc-title">目录</div>
+				<nav id="toc"></nav>
+			</aside>
+			<div class="prose" id="content">
+				<slot />
+			</div>
+		</div>
+
+		<nav class="pager" aria-label="相邻作品">
+			{prev ? <a href={`/${collection}/${prev.id}/`}>← 上一篇：{prev.data.title}</a> : <span></span>}
+			{next ? <a class="next" href={`/${collection}/${next.id}/`}>下一篇：{next.data.title} →</a> : <span></span>}
+		</nav>
+	</article>
+</Base>
+
+<slot name="head" slot="head">
+	{math && <link rel="stylesheet" href="/katex/katex.min.css" />}
+</slot>
+
+<script>
+	// 由正文 h2/h3 构建目录侧栏（构建产物上运行，零依赖）
+	function buildToc() {
+		const content = document.getElementById('content');
+		const toc = document.getElementById('toc');
+		const aside = document.querySelector('.toc');
+		if (!content || !toc || !aside) return;
+
+		const headings = Array.from(content.querySelectorAll('h2, h3'));
+		if (headings.length === 0) {
+			aside.setAttribute('hidden', '');
+			return;
+		}
+		const usedIds = new Set<string>();
+		for (const h of headings) {
+			if (!h.id) {
+				const base = (h.textContent || '').trim().replace(/\s+/g, '-').slice(0, 40) || 'section';
+				let id = base;
+				let n = 1;
+				while (usedIds.has(id)) id = `${base}-${n++}`;
+				usedIds.add(id);
+				h.id = encodeURIComponent(id);
+			} else {
+				usedIds.add(h.id);
+			}
+		}
+		for (const h of headings) {
+			const a = document.createElement('a');
+			a.href = `#${h.id}`;
+			a.textContent = h.textContent || '';
+			a.className = h.tagName === 'H3' ? 'sub' : '';
+			toc.appendChild(a);
+		}
+	}
+	buildToc();
+</script>
+
+<style>
+	article {
+		display: block;
+	}
+	.head {
+		margin-bottom: 2em;
+		padding-bottom: 1.2em;
+		border-bottom: 1px solid var(--border);
+	}
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5em;
+		font-size: 0.88em;
+		color: var(--text-soft);
+	}
+	.meta .label {
+		color: var(--accent);
+		font-weight: 600;
+		text-decoration: none;
+	}
+	h1 {
+		margin: 0.3em 0 0.4em;
+		font-size: 1.9em;
+		line-height: 1.35;
+	}
+	.updated {
+		color: var(--text-soft);
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4em;
+		margin-top: 0.4em;
+	}
+	.tags span {
+		padding: 0.05em 0.7em;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		font-size: 0.8em;
+		color: var(--text-soft);
+	}
+	.links {
+		display: flex;
+		gap: 0.7em;
+		margin-top: 0.9em;
+	}
+	.btn {
+		padding: 0.3em 1em;
+		border: 1px solid var(--accent);
+		border-radius: 8px;
+		color: var(--accent);
+		text-decoration: none;
+		font-size: 0.9em;
+	}
+	.btn:hover {
+		background: var(--accent-weak);
+	}
+	.body {
+		display: grid;
+		grid-template-columns: 11em 1fr;
+		gap: 2em;
+	}
+	.toc {
+		font-size: 0.85em;
+	}
+	.toc-title {
+		margin-bottom: 0.5em;
+		font-weight: 600;
+		color: var(--text-soft);
+	}
+	#toc {
+		position: sticky;
+		top: 4.5em;
+		display: flex;
+		flex-direction: column;
+		gap: 0.3em;
+		max-height: calc(100vh - 7em);
+		overflow-y: auto;
+	}
+	#toc a {
+		color: var(--text-soft);
+		text-decoration: none;
+		line-height: 1.45;
+		border-left: 2px solid var(--border);
+		padding-left: 0.7em;
+	}
+	#toc a:hover {
+		color: var(--accent);
+		border-left-color: var(--accent);
+	}
+	#toc a.sub {
+		padding-left: 1.6em;
+		font-size: 0.94em;
+	}
+	.pager {
+		display: flex;
+		justify-content: space-between;
+		gap: 1em;
+		margin-top: 2.5em;
+		padding-top: 1.2em;
+		border-top: 1px solid var(--border);
+		font-size: 0.9em;
+	}
+	.pager a {
+		color: var(--text);
+		text-decoration: none;
+	}
+	.pager a:hover {
+		color: var(--accent);
+	}
+	.pager .next {
+		margin-left: auto;
+		text-align: right;
+	}
+	@media (max-width: 960px) {
+		.body {
+			display: block;
+		}
+		.toc {
+			display: none;
+		}
+		h1 {
+			font-size: 1.55em;
+		}
+	}
+</style>

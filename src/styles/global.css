@@ -1,40 +1,66 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+/* 学术极简主题：浅色为主，深色跟随系统/手动切换（public/theme.js 控制 data-theme） */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
+	--accent: #0f5db3;
+	--accent-weak: rgba(15, 93, 179, 10%);
+	--bg: #ffffff;
+	--bg-soft: #f6f7f9;
+	--text: #1c2733;
+	--text-soft: #5b6b7b;
+	--border: #e3e7ec;
+	/* 兼容旧组件的 rgb() 三元组写法 */
+	--black: 28, 39, 51;
+	--gray: 91, 107, 123;
+	--gray-light: 227, 231, 236;
+	--gray-dark: 28, 39, 51;
+	--gray-gradient: rgba(var(--gray-light), 40%), #fff;
 	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+		0 1px 3px rgba(30, 41, 59, 8%),
+		0 8px 24px rgba(30, 41, 59, 8%);
+	--code-bg: #f2f4f7;
 }
+
+[data-theme='dark'] {
+	--accent: #6fb3ff;
+	--accent-weak: rgba(111, 179, 255, 14%);
+	--bg: #10161d;
+	--bg-soft: #171f28;
+	--text: #dbe4ee;
+	--text-soft: #93a3b5;
+	--border: #27313c;
+	--black: 219, 228, 238;
+	--gray: 147, 163, 181;
+	--gray-light: 39, 49, 60;
+	--gray-dark: 219, 228, 238;
+	--gray-gradient: rgba(var(--gray-light), 40%), #10161d;
+	--code-bg: #1a232d;
+}
+
+html {
+	background: var(--bg);
+}
+
 body {
-	font-family: var(--font-atkinson);
+	font-family:
+		var(--font-atkinson),
+		-apple-system,
+		'PingFang SC',
+		'Hiragino Sans GB',
+		'Noto Sans SC',
+		'Microsoft YaHei',
+		sans-serif;
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	background: var(--bg);
+	color: var(--text);
+	font-size: 18px;
+	line-height: 1.8;
+	-webkit-text-size-adjust: 100%;
 }
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
-}
+
 h1,
 h2,
 h3,
@@ -42,23 +68,20 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
+	color: var(--text);
+	line-height: 1.3;
 }
 h1 {
-	font-size: 3.052em;
+	font-size: 2.2em;
 }
 h2 {
-	font-size: 2.441em;
+	font-size: 1.6em;
 }
 h3 {
-	font-size: 1.953em;
+	font-size: 1.3em;
 }
 h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
+	font-size: 1.1em;
 }
 strong,
 b {
@@ -73,32 +96,64 @@ a:hover {
 p {
 	margin-bottom: 1em;
 }
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
+textarea,
 input {
 	font-size: 16px;
+	font-family: inherit;
 }
-table {
+
+/* 正文排版（作品详情/关于页 .prose 内的 Markdown 内容） */
+.prose p {
+	margin-bottom: 1.25em;
+}
+.prose h2,
+.prose h3 {
+	margin-top: 1.8em;
+}
+.prose ul,
+.prose ol {
+	padding-left: 1.5em;
+}
+.prose li {
+	margin-bottom: 0.4em;
+}
+.prose table {
 	width: 100%;
+	border-collapse: collapse;
+	margin: 1.5em 0;
+	font-size: 0.92em;
 }
+.prose th,
+.prose td {
+	border: 1px solid var(--border);
+	padding: 0.4em 0.8em;
+	text-align: left;
+}
+.prose thead th {
+	background: var(--bg-soft);
+}
+.prose img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
 img {
 	max-width: 100%;
 	height: auto;
 	border-radius: 8px;
 }
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	padding: 2px 6px;
+	background-color: var(--code-bg);
+	border-radius: 4px;
+	font-size: 0.88em;
+	font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 pre {
-	padding: 1.5em;
+	padding: 1.2em;
 	border-radius: 8px;
+	overflow-x: auto;
 }
 pre > code {
 	all: unset;
@@ -106,19 +161,36 @@ pre > code {
 blockquote {
 	border-left: 4px solid var(--accent);
 	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
+	margin: 1.5em 0;
+	color: var(--text-soft);
+	background: var(--accent-weak);
+	border-radius: 0 8px 8px 0;
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--border);
+	margin: 2em 0;
 }
+
+button {
+	font-family: inherit;
+	cursor: pointer;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
 @media (max-width: 720px) {
 	body {
-		font-size: 18px;
+		font-size: 16.5px;
 	}
 	main {
-		padding: 1em;
+		padding: 1.2em 0.8em;
+	}
+	h1 {
+		font-size: 1.8em;
 	}
 }
 
@@ -130,12 +202,7 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }

@@ -160,18 +160,18 @@ const { title, description, pubDate, updatedDate, tags, math, githubUrl, pdfUrl 
 		max-height: calc(100vh - 7em);
 		overflow-y: auto;
 	}
-	#toc a {
+	#toc :global(a) {
 		color: var(--text-soft);
 		text-decoration: none;
 		line-height: 1.45;
 		border-left: 2px solid var(--border);
 		padding-left: 0.7em;
 	}
-	#toc a:hover {
+	#toc :global(a:hover) {
 		color: var(--accent);
 		border-left-color: var(--accent);
 	}
-	#toc a.sub {
+	#toc :global(a.sub) {
 		padding-left: 1.6em;
 		font-size: 0.94em;
 	}

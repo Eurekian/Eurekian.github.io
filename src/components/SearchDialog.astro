@@ -20,7 +20,7 @@
 
 <script is:inline src="/search.js" defer></script>
 
-<style>
+<style is:global>
 	#search-backdrop {
 		position: fixed;
 		inset: 0;
@@ -116,7 +116,7 @@
 		font-weight: 600;
 		line-height: 1.5;
 	}
-	.hit :global(mark) {
+	.hit mark {
 		background: var(--accent-weak);
 		color: var(--accent);
 		font-weight: 700;

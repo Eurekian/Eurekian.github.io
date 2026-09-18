@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "node scripts/copy-katex.mjs && node scripts/copy-admin.mjs && astro dev",
-    "build": "node scripts/copy-katex.mjs && node scripts/copy-admin.mjs && astro build && pagefind --site dist",
+    "build": "node scripts/copy-katex.mjs && node scripts/copy-admin.mjs && node scripts/lint-content.mjs && astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro"
   },

@@ -2,15 +2,12 @@
 title: 三格点开链Heisenberg模型
 description: 用 numpy 的 kron 直积构建开链海森堡模型哈密顿量并严格对角化——全部本征值与简并度、基态能量与基态总自旋的数值求解，附 11 项单元测试与解析值逐项对照
 pubDate: 2026-09-16
-updatedDate: ''
 tags:
   - 计算物理
   - 严格对角化
   - Python
   - 量子力学
 math: true
-githubUrl: ''
-pdfUrl: ''
 draft: false
 ---
 
@@ -32,10 +29,10 @@ $$
 
 ### 基矢与直积顺序约定
 
-多体基矢 $\ket{s_1 s_2 \cdots s_n}$ 中格点 1 在最左（kron 链第一个因子）；复合指标 $\mathrm{row} = s_1 2^{n-1} + s_2 2^{n-2} + \cdots + s_n$，其中 $s_k \in {0,1}$ 分别对应 $\ket{\uparrow}$（$S^z=+1/2$）与 $\ket{\downarrow}$。单点算符按下式嵌入直积空间：
+多体基矢 $\ket{s_1 s_2 \cdots s_n}$ 中格点 1 在最左（kron 链第一个因子）；复合指标 $\mathrm{row} = s_1 2^{n-1} + s_2 2^{n-2} + \cdots + s_n$，其中 $s_k \in \{0,1\}$ 分别对应 $\ket{\uparrow}$（$S^z=+1/2$）与 $\ket{\downarrow}$。单点算符按下式嵌入直积空间：
 
 $$
-O^{(k)} = \underbrace{I \otimes \cdots \otimes I}_{k-1} \otimes, O ,\otimes \underbrace{I \otimes \cdots \otimes I}_{n-k}.
+O^{(k)} = \underbrace{I \otimes \cdots \otimes I}_{k-1} \otimes\, O \,\otimes \underbrace{I \otimes \cdots \otimes I}_{n-k}.
 $$
 
 ### 核心实现（节选）
@@ -143,7 +140,7 @@ $$
 H = \tfrac{1}{2}\left( S_{\mathrm{tot}}^{2} - S_{13}^{2} - \tfrac{3}{4} \right)
 $$
 
-（$S_{13}$ 为格点 1、3 组成的复合自旋）可按 $(S,, S_{13})$ 扇区完全分类：$S=1/2$ 且 $S_{13}=1$ 的扇区能量为 $-1$，即基态；$S = 3/2$ 四重态能量 $+1/2$ 为最高能级。总自旋守恒（$[H, S_{\mathrm{tot}}^{2}] = 0$ 数值验证为零）正是 $S_{\mathrm{tot}}$ 良好量子数的体现。
+（$S_{13}$ 为格点 1、3 组成的复合自旋）可按 $(S,\, S_{13})$ 扇区完全分类：$S=1/2$ 且 $S_{13}=1$ 的扇区能量为 $-1$，即基态；$S = 3/2$ 四重态能量 $+1/2$ 为最高能级。总自旋守恒（$[H, S_{\mathrm{tot}}^{2}] = 0$ 数值验证为零）正是 $S_{\mathrm{tot}}$ 良好量子数的体现。
 
 ## 工程要点
 

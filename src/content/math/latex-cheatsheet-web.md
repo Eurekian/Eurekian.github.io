@@ -2,13 +2,11 @@
 title: 数理常用 LaTeX 代码速查手册（1.0）
 description: 希腊字母、运算符、箭头、字体、微积分、线性代数、概率统计与物理专题的公式效果与代码对照——每个符号都是站内 KaTeX 实时构建渲染
 pubDate: 2026-09-18
-updatedDate: ''
 tags:
   - LaTeX
   - 速查表
   - 数学排版
 math: true
-githubUrl: ''
 pdfUrl: /files/latex-cheatsheet.pdf
 draft: false
 ---
@@ -25,19 +23,19 @@ draft: false
 - 上下花括号：`\overbrace{a+b}^{n \text{ 项}}` 得 $\overbrace{a+b}^{n \text{ 项}}$，`\underbrace{a+b+\cdots}_{\text{部分和}}` 得 $\underbrace{a+b+\cdots}_{\text{部分和}}$；
 - 定义等号：`a \coloneqq b` 得 $a \coloneqq b$；
 - 分数三兄弟：`\frac` $\frac{1}{2}$、`\dfrac`（行内大分数）、`\tfrac`（行间小分数）；连分数用 `\cfrac`：$\cfrac{1}{1+\cfrac{1}{1+\cdots}}$；
-- 多行上下标：`\sum_{\substack{i=1\ i\ne j}}^{n}` 得 $\sum_{\substack{i=1\ i\ne j}}^{n} a_{ij}$。
+- 多行上下标：`\sum_{\substack{i=1\\ i\ne j}}^{n}` 得 $\sum_{\substack{i=1\\ i\ne j}}^{n} a_{ij}$。
 
 ## 希腊字母
 
 小写（左为效果，右为代码）：
 
 | 效果 | 代码 | 效果 | 代码 | 效果 | 代码 |
-| --- | --- | --- | --- | --- | --- |
+|------|------|------|------|------|------|
 | $\alpha$ | `\alpha` | $\beta$ | `\beta` | $\gamma$ | `\gamma` |
 | $\delta$ | `\delta` | $\epsilon$ | `\epsilon` | $\zeta$ | `\zeta` |
 | $\eta$ | `\eta` | $\theta$ | `\theta` | $\iota$ | `\iota` |
 | $\kappa$ | `\kappa` | $\lambda$ | `\lambda` | $\mu$ | `\mu` |
-| $\nu$ | \`\nu\` | $\xi$ | `\xi` | $\pi$ | `\pi` |
+| $\nu$ | `\nu` | $\xi$ | `\xi` | $\pi$ | `\pi` |
 | $\rho$ | `\rho` | $\sigma$ | `\sigma` | $\tau$ | `\tau` |
 | $\upsilon$ | `\upsilon` | $\phi$ | `\phi` | $\chi$ | `\chi` |
 | $\psi$ | `\psi` | $\omega$ | `\omega` | $o$ | （无命令，用拉丁 o） |
@@ -47,7 +45,7 @@ draft: false
 常用大写（与拉丁字母同形者直接用拉丁字母，如 A、B、E）：
 
 | 效果 | 代码 | 效果 | 代码 | 效果 | 代码 |
-| --- | --- | --- | --- | --- | --- |
+|------|------|------|------|------|------|
 | $\Gamma$ | `\Gamma` | $\Delta$ | `\Delta` | $\Theta$ | `\Theta` |
 | $\Lambda$ | `\Lambda` | $\Xi$ | `\Xi` | $\Pi$ | `\Pi` |
 | $\Sigma$ | `\Sigma` | $\Upsilon$ | `\Upsilon` | $\Phi$ | `\Phi` |
@@ -58,17 +56,17 @@ draft: false
 ## 运算符、集合与杂项符号
 
 | 效果 | 代码 | 效果 | 代码 | 效果 | 代码 |
-| --- | --- | --- | --- | --- | --- |
+|------|------|------|------|------|------|
 | $\pm$ | `\pm` | $\mp$ | `\mp` | $\times$ | `\times` |
 | $\div$ | `\div` | $\cdot$ | `\cdot` | $\ast$ | `\ast` |
 | $\star$ | `\star` | $\circ$ | `\circ` | $\bullet$ | `\bullet` |
 | $\oplus$ | `\oplus` | $\otimes$ | `\otimes` | $\odot$ | `\odot` |
 | $\cup$ | `\cup` | $\cap$ | `\cap` | $\setminus$ | `\setminus` |
 | $\subset$ | `\subset` | $\subseteq$ | `\subseteq` | $\supset$ | `\supset` |
-| $\in$ | `\in` | $\notin$ | \`\notin\` | $\ni$ | \`\ni\` |
+| $\in$ | `\in` | $\notin$ | `\notin` | $\ni$ | `\ni` |
 | $\emptyset$ | `\emptyset` | $\varnothing$ | `\varnothing` | $\infty$ | `\infty` |
-| $\forall$ | `\forall` | $\exists$ | `\exists` | $\nexists$ | \`\nexists\` |
-| $\partial$ | `\partial` | $\nabla$ | \`\nabla\` | $\propto$ | `\propto` |
+| $\forall$ | `\forall` | $\exists$ | `\exists` | $\nexists$ | `\nexists` |
+| $\partial$ | `\partial` | $\nabla$ | `\nabla` | $\propto$ | `\propto` |
 | $\ell$ | `\ell` | $\sum$ | `\sum` | $\angle$ | `\angle` |
 | $\lfloor x\rfloor$ | `\lfloor x\rfloor` | $\lceil x\rceil$ | `\lceil x\rceil` | $\langle x\rangle$ | `\langle x\rangle` |
 | $\binom{n}{k}$ | `\binom{n}{k}` | $\sqrt[n]{x}$ | `\sqrt[n]{x}` | $\prod$ | `\prod` |
@@ -78,14 +76,14 @@ draft: false
 ## 关系符号、逻辑与箭头
 
 | 效果 | 代码 | 效果 | 代码 | 效果 | 代码 |
-| --- | --- | --- | --- | --- | --- |
-| $\le$ | `\le` | $\ge$ | `\ge` | $\ne$ | \`\ne\` |
+|------|------|------|------|------|------|
+| $\le$ | `\le` | $\ge$ | `\ge` | $\ne$ | `\ne` |
 | $\approx$ | `\approx` | $\equiv$ | `\equiv` | $\sim$ | `\sim` |
 | $\simeq$ | `\simeq` | $\cong$ | `\cong` | $\ll$ | `\ll` |
-| $\gg$ | `\gg` | $\mid$ | `\mid` | $\nmid$ | \`\nmid\` |
+| $\gg$ | `\gg` | $\mid$ | `\mid` | $\nmid$ | `\nmid` |
 | $\parallel$ | `\parallel` | $\perp$ | `\perp` | $\triangle$ | `\triangle` |
 | $\because$ | `\because` | $\therefore$ | `\therefore` | $\square$ | `\square` |
-| $\wedge$ | `\wedge` | $\vee$ | `\vee` | $\neg$ | \`\neg\` |
+| $\wedge$ | `\wedge` | $\vee$ | `\vee` | $\neg$ | `\neg` |
 | $\vdash$ | `\vdash` | $\models$ | `\models` | $\top$ / $\bot$ | `\top` `\bot` |
 | $\to$ | `\to` | $\longrightarrow$ | `\longrightarrow` | $\mapsto$ | `\mapsto` |
 | $\Rightarrow$ | `\Rightarrow` | $\Leftrightarrow$ | `\Leftrightarrow` | $\iff$ | `\iff` |
@@ -95,7 +93,7 @@ draft: false
 ## 修饰符号与数学字体
 
 | 效果 | 代码 | 效果 | 代码 | 效果 | 代码 |
-| --- | --- | --- | --- | --- | --- |
+|------|------|------|------|------|------|
 | $\hat{x}$ | `\hat{x}` | $\widehat{xy}$ | `\widehat{xy}` | $\check{x}$ | `\check{x}` |
 | $\tilde{x}$ | `\tilde{x}` | $\widetilde{xy}$ | `\widetilde{xy}` | $\breve{x}$ | `\breve{x}` |
 | $\bar{x}$ | `\bar{x}` | $\vec{x}$ | `\vec{x}` | $\overline{xy}$ | `\overline{xy}` |
@@ -148,12 +146,17 @@ $$
 \iiint_{V} \rho \dd{V},
 $$
 
+```latex
+\oint_{\partial S}   \iint_{D}   \iiint_{V}      % 环路/二重/三重积分
+\int_a^b f \dd{x}    \int_{-\infty}^{\infty}     % 定积分与无穷限
+\dv{x}                                          % 单独的 d/dx 算子
+```
+
 **变限积分求导**（莱布尼茨法则）：
 
 $$
 \dvop{x} \int_{a(x)}^{b(x)} f \dd{t}
-= f!\left(b(x)\right) b'(x) - f!\left(a(x)\right) a'(x)
-
+= f\!\left(b(x)\right) b'(x) - f\!\left(a(x)\right) a'(x)
 + \int_{a(x)}^{b(x)} \pdv{f}{x} \dd{t}.
 $$
 
@@ -162,9 +165,9 @@ $$
 $$
 \begin{aligned}
 \oint_{\partial D} \left( L \dd{x} + M \dd{y} \right)
-  &= \iint_{D} \left( \pdv{M}{x} - \pdv{L}{y} \right) \dd{A} && \text{格林公式},\
+  &= \iint_{D} \left( \pdv{M}{x} - \pdv{L}{y} \right) \dd{A} && \text{格林公式},\\
 \oint_{\partial S} \mathbf{F} \cdot \dd{\mathbf{l}}
-  &= \iint_{S} (\curl \mathbf{F}) \cdot \dd{\mathbf{A}} && \text{斯托克斯公式},\
+  &= \iint_{S} (\curl \mathbf{F}) \cdot \dd{\mathbf{A}} && \text{斯托克斯公式},\\
 \iint_{\partial V} \mathbf{F} \cdot \dd{\mathbf{A}}
   &= \iiint_{V} \divergence \mathbf{F} \dd{V} && \text{高斯散度定理}.
 \end{aligned}
@@ -188,7 +191,6 @@ $$
 
 $$
 f(x) = \sum_{n=0}^{N} \frac{f^{(n)}(a)}{n!} (x-a)^{n}
-
 + \frac{f^{(N+1)}(\xi)}{(N+1)!} (x-a)^{N+1}.
 $$
 
@@ -202,7 +204,7 @@ $$
 $$
 \Gamma(z+1) = z \Gamma(z), \qquad
 \Gamma(n+1) = n!, \qquad
-\Gamma!\left( \tfrac{1}{2} \right) = \sqrt{\pi}.
+\Gamma\!\left( \tfrac{1}{2} \right) = \sqrt{\pi}.
 $$
 
 **斯特林公式**（物理中常用 $\ln N! \approx N \ln N - N$）：
@@ -230,17 +232,17 @@ $$
 **矩阵环境**（定界符不同）：
 
 $$
-\begin{pmatrix} a & b \ c & d \end{pmatrix} \quad
-\begin{bmatrix} a & b \ c & d \end{bmatrix} \quad
-\begin{vmatrix} a & b \ c & d \end{vmatrix} = ad - bc \quad
-\begin{Bmatrix} a & b \ c & d \end{Bmatrix}
+\begin{pmatrix} a & b \\ c & d \end{pmatrix} \quad
+\begin{bmatrix} a & b \\ c & d \end{bmatrix} \quad
+\begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc \quad
+\begin{Bmatrix} a & b \\ c & d \end{Bmatrix}
 $$
 
 ```latex
-\begin{pmatrix} a & b \ c & d \end{pmatrix}   % 圆括号
-\begin{bmatrix} a & b \ c & d \end{bmatrix}   % 方括号
-\begin{vmatrix} a & b \ c & d \end{vmatrix}   % 竖线(行列式)
-\begin{Bmatrix} a & b \ c & d \end{Bmatrix}   % 花括号
+\begin{pmatrix} a & b \\ c & d \end{pmatrix}   % 圆括号
+\begin{bmatrix} a & b \\ c & d \end{bmatrix}   % 方括号
+\begin{vmatrix} a & b \\ c & d \end{vmatrix}   % 竖线(行列式)
+\begin{Bmatrix} a & b \\ c & d \end{Bmatrix}   % 花括号
 行间省略号: \cdots  \vdots  \ddots ;  行内小矩阵: smallmatrix 环境
 ```
 
@@ -248,13 +250,13 @@ $$
 
 $$
 A = \begin{pmatrix}
-a_{11} & \cdots & a_{1n} \
-\vdots & \ddots & \vdots \
+a_{11} & \cdots & a_{1n} \\
+\vdots & \ddots & \vdots \\
 a_{m1} & \cdots & a_{mn}
 \end{pmatrix},
 \qquad
 \left[\begin{array}{cc|c}
-1 & 2 & 3 \ 4 & 5 & 6
+1 & 2 & 3 \\ 4 & 5 & 6
 \end{array}\right].
 $$
 
@@ -279,20 +281,20 @@ A_{\text{对称}} = Q \Lambda Q^{\mathsf T}, \qquad
 \operatorname{rank} A + \dim \ker A = n .
 $$
 
-**复数记号**：$z = a + b,\mathrm{i}$，$\abs{z}^{2} = z \bar{z}$，$\mathrm{e}^{\mathrm{i}\theta} = \cos\theta + \mathrm{i} \sin\theta$，欧拉公式逆用得 $\cos\theta = \dfrac{\mathrm{e}^{\mathrm{i}\theta} + \mathrm{e}^{-\mathrm{i}\theta}}{2}$。
+**复数记号**：$z = a + b\,\mathrm{i}$，$\abs{z}^{2} = z \bar{z}$，$\mathrm{e}^{\mathrm{i}\theta} = \cos\theta + \mathrm{i} \sin\theta$，欧拉公式逆用得 $\cos\theta = \dfrac{\mathrm{e}^{\mathrm{i}\theta} + \mathrm{e}^{-\mathrm{i}\theta}}{2}$。
 
 **张量与指标记号**（爱因斯坦求和约定，重复指标求和）：
 
 $$
 \delta_{ij} =
-\begin{cases} 1, & i = j \ 0, & i \ne j \end{cases}
+\begin{cases} 1, & i = j \\ 0, & i \ne j \end{cases}
 \qquad
 \epsilon_{123} = 1 \ (\text{全反对称}), \qquad
 \epsilon_{ijk} \epsilon_{lmk} = \delta_{il} \delta_{jm} - \delta_{im} \delta_{jl},
 $$
 
 $$
-T = T_{ij} , \mathbf{e}_i \otimes \mathbf{e}_j, \qquad
+T = T_{ij} \, \mathbf{e}_i \otimes \mathbf{e}_j, \qquad
 (\mathbf{a} \times \mathbf{b})_i = \epsilon_{ijk} a_j b_k .
 $$
 
@@ -323,13 +325,13 @@ $X \perp Y$（独立）时 $P(AB) = P(A)P(B)$，且 $\mathrm{Cov}(X,Y) = 0$（�
 $$
 \begin{aligned}
 \text{二项 } B(n,p)\text{:}\quad & P(X=k) = \binom{n}{k} p^{k} (1-p)^{n-k},
-\quad \ev{X} = np, \ \mathrm{Var} = np(1-p); \
+\quad \ev{X} = np, \ \mathrm{Var} = np(1-p); \\
 \text{泊松 } \mathrm{Pois}(\lambda)\text{:}\quad & P(X=k) = \frac{\lambda^{k} \mathrm{e}^{-\lambda}}{k!},
-\quad \ev{X} = \mathrm{Var}(X) = \lambda; \
+\quad \ev{X} = \mathrm{Var}(X) = \lambda; \\
 \text{指数}\text{:}\quad & f(x) = \lambda \mathrm{e}^{-\lambda x} \ (x \ge 0),
-\quad \ev{X} = \frac{1}{\lambda}, \ \mathrm{Var} = \frac{1}{\lambda^{2}}; \
+\quad \ev{X} = \frac{1}{\lambda}, \ \mathrm{Var} = \frac{1}{\lambda^{2}}; \\
 \text{正态 } N(\mu, \sigma^{2})\text{:}\quad & f(x) = \frac{1}{\sigma \sqrt{2\pi}}
-\exp!\left[ -\frac{(x-\mu)^{2}}{2\sigma^{2}} \right],
+\exp\!\left[ -\frac{(x-\mu)^{2}}{2\sigma^{2}} \right],
 \quad Z = \frac{X - \mu}{\sigma} \sim N(0,1).
 \end{aligned}
 $$
@@ -337,9 +339,9 @@ $$
 **极限定理**：
 
 $$
-\lim_{n \to \infty} P!\left( \abs{\bar{X}_n - \mu} > \varepsilon \right) = 0
+\lim_{n \to \infty} P\!\left( \abs{\bar{X}_n - \mu} > \varepsilon \right) = 0
 \ \text{(弱大数定律)}, \qquad
-\frac{\sqrt{n}, (\bar{X}_n - \mu)}{\sigma} \xrightarrow{\ d\ } N(0,1)
+\frac{\sqrt{n}\, (\bar{X}_n - \mu)}{\sigma} \xrightarrow{\ d\ } N(0,1)
 \ \text{(中心极限定理)} .
 $$
 
@@ -368,7 +370,7 @@ $$
 
 $$
 \begin{aligned}
-\divergence \mathbf{E} &= \frac{\rho}{\varepsilon_0}, & \divergence \mathbf{B} &= 0,\
+\divergence \mathbf{E} &= \frac{\rho}{\varepsilon_0}, & \divergence \mathbf{B} &= 0,\\
 \curl \mathbf{E} &= - \pdv{\mathbf{B}}{t}, & \curl \mathbf{B} &= \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \pdv{\mathbf{E}}{t}.
 \end{aligned}
 $$
@@ -436,7 +438,7 @@ $$
 
 $$
 \dv{N}{v} = 4 \pi N \left( \frac{m}{2 \pi k_B T} \right)^{3/2}
-v^{2} \exp!\left( - \frac{m v^{2}}{2 k_B T} \right)
+v^{2} \exp\!\left( - \frac{m v^{2}}{2 k_B T} \right)
 \quad \text{(麦克斯韦速率分布)} .
 $$
 
@@ -450,8 +452,8 @@ $$
 ## 多行公式环境速查
 
 | 环境 | 用途 |
-| --- | --- |
-| `align` / `align*` | 多行对齐，`&` 指定对齐点，`\` 换行 |
+|------|------|
+| `align` / `align*` | 多行对齐，`&` 指定对齐点，`\\` 换行 |
 | `gather` / `gather*` | 多行居中，无对齐点 |
 | `split` | 长公式拆行（须外套 `equation`），整体单编号 |
 | `multline` | 首行左对齐、末行右对齐的长公式 |
@@ -464,7 +466,7 @@ align 完整示例（含编号控制）：
 ```latex
 \begin{align}
   \int_0^\infty \mathrm{e}^{-x^2} \dd{x}
-    &= \frac{1}{2} \int_0^\infty t^{-1/2} \mathrm{e}^{-t} \dd{t} \notag\
+    &= \frac{1}{2} \int_0^\infty t^{-1/2} \mathrm{e}^{-t} \dd{t} \notag\\
     &= \frac{1}{2} \Gamma\!\left(\frac{1}{2}\right) = \frac{\sqrt{\pi}}{2}
 \end{align}
 % \notag 或 \nonumber 取消本行编号; 整块不编号用 align*
@@ -490,7 +492,7 @@ align 完整示例（含编号控制）：
 ## 已知冲突与排坑清单
 
 1. **physics 与 siunitx 的 `\qty` 冲突**：两包都定义 `\qty`；同时加载时 siunitx 会主动让位。模板采用 siunitx 官方方案，在导言区加 `\AtBeginDocument{\RenewCommandCopy\qty\SI}` 恢复 `\qty{数}{单位}`；此时 physics 的 `\qty(...)` 自动定界语法不可用，请改用 `\left(...\right)`。
-2. \*\*`\div` 被 physics 重定义为"散度"\*\*：原除号 ÷ 已在加载前保存为 `\divisionsign`。
+2. **`\div` 被 physics 重定义为"散度"**：原除号 ÷ 已在加载前保存为 `\divisionsign`。
 3. **`\Re` 与 `\Im` 被 physics 重定义**为 $\Re(z)$、$\Im(z)$ 算符形式（原定义保存为 `\real` 与 `\imaginary`）。
 4. **乘号与字母**：乘号 $\times$ 用 `\times`，不要打字母 x；点乘用 `\cdot`，叉乘用 `\cross` 或 `\times`。
 5. **粗体**：`\mathbf{v}` 不作用于希腊字母且为直立体；矢量/张量建议用 `\bm{v}`、`\bm{\sigma}`。

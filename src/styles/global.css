@@ -103,6 +103,14 @@ input {
 }
 
 /* 正文排版（作品详情/关于页 .prose 内的 Markdown 内容） */
+/* 阅读宽度：段落/列表限宽护眼；表格/代码块/行间公式不限宽，
+   在加宽的文章版面（60em）里用满可用宽度，减少横向滚动 */
+.prose > p,
+.prose > ul,
+.prose > ol,
+.prose > blockquote {
+	max-width: 44em;
+}
 .prose p {
 	margin-bottom: 1.25em;
 }
@@ -117,8 +125,13 @@ input {
 .prose li {
 	margin-bottom: 0.4em;
 }
+/* 宽表格（六列符号表等）在原地横向滚动，不撑破版面；
+   窄表格按内容自然宽度收缩 */
 .prose table {
-	width: 100%;
+	display: block;
+	overflow-x: auto;
+	width: fit-content;
+	max-width: 100%;
 	border-collapse: collapse;
 	margin: 1.5em 0;
 	font-size: 0.92em;

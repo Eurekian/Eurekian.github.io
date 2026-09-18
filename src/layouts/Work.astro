@@ -17,7 +17,7 @@ const { entry, collection, label, prev, next } = Astro.props;
 const { title, description, pubDate, updatedDate, tags, math, githubUrl, pdfUrl } = entry.data;
 ---
 
-<Base title={title} description={description}>
+<Base wide title={title} description={description}>
 	<article>
 		<header class="head">
 			<div class="meta">
@@ -142,6 +142,11 @@ const { title, description, pubDate, updatedDate, tags, math, githubUrl, pdfUrl 
 		display: grid;
 		grid-template-columns: 11em 1fr;
 		gap: 2em;
+	}
+	/* 解除网格项 min-width:auto：正文宽窄由版心决定，
+	   表格/代码/公式各自在滚动容器里处理溢出 */
+	.body > .prose {
+		min-width: 0;
 	}
 	.toc {
 		font-size: 0.85em;

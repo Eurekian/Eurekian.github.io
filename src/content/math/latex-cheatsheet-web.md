@@ -142,6 +142,12 @@ $$
 \iiint_{V} \rho \dd{V},
 $$
 
+```latex
+\oint_{\partial S}   \iint_{D}   \iiint_{V}      % 环路/二重/三重积分
+\int_a^b f \dd{x}    \int_{-\infty}^{\infty}     % 定积分与无穷限
+\dv{x}                                          % 单独的 d/dx 算子
+```
+
 **变限积分求导**（莱布尼茨法则）：
 
 $$

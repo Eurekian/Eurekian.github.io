@@ -184,11 +184,12 @@ hr {
 	background-color: var(--shiki-light-bg, transparent);
 }
 
-/* KaTeX：长公式允许横向滚动，不撑破布局 */
+/* KaTeX：长公式允许横向滚动，不撑破布局。
+   注意不能设 overflow-y: hidden——积分号等大算符的字形墨迹会
+   高于内容盒，纵向裁剪会把顶部弯钩切掉；用足够的纵向内边距留出余量。 */
 .prose .katex-display {
 	overflow-x: auto;
-	overflow-y: hidden;
-	padding: 0.2em 0;
+	padding: 0.45em 0.1em;
 }
 
 /* 定理/定义/提示框（:::theorem title="..." 等容器） */

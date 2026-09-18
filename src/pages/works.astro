@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import WorkCard from '../components/WorkCard.astro';
+import { COLLECTIONS, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+
+// 四类作品合并、按发布时间倒序；标签筛选复用 /filter.js（同 #work-list 结构）
+const all = (
+	await Promise.all(
+		COLLECTIONS.map(async (c) => {
+			const entries = await getCollection(c.name, ({ data }) => !data.draft);
+			return entries.map((e) => ({ entry: e, label: c.label, name: c.name }));
+		})
+	)
+)
+	.flat()
+	.sort((a, b) => b.entry.data.pubDate.valueOf() - a.entry.data.pubDate.valueOf());
+
+const tags = [...new Set(all.flatMap((w) => w.entry.data.tags))].sort();
+---
+
+<Base wide title={`全部作品 · ${SITE_TITLE}`} description="全部作品的聚合列表，可按标签筛选">
+	<h1>全部作品</h1>
+	<p class="desc">{all.length} 篇 · 按发布时间倒序</p>
+
+	{
+		tags.length > 0 && (
+			<div class="tag-filter" role="group" aria-label="按标签筛选">
+				<button type="button" class="tag-chip active" data-tag="all">
+					全部
+				</button>
+				{tags.map((t) => (
+					<button type="button" class="tag-chip" data-tag={t}>
+						{t}
+					</button>
+				))}
+			</div>
+		)
+	}
+
+	<div class="list" id="work-list">
+		{
+			all.map((w) => (
+				<WorkCard
+					href={`/${w.name}/${w.entry.id}/`}
+					entry={w.entry}
+					collectionLabel={w.label}
+				/>
+			))
+		}
+		{all.length === 0 && <p class="empty">还没有公开作品。</p>}
+	</div>
+</Base>
+
+<script is:inline src="/filter.js" defer></script>
+
+<style>
+	h1 {
+		font-size: 1.8em;
+		margin-bottom: 0.2em;
+	}
+	.desc {
+		color: var(--text-soft);
+		margin-bottom: 1.2em;
+	}
+	.tag-filter {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5em;
+		margin-bottom: 1.3em;
+	}
+	.tag-chip {
+		padding: 0.15em 0.9em;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--bg);
+		color: var(--text-soft);
+		font-size: 0.85em;
+	}
+	.tag-chip:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.tag-chip.active {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: var(--bg);
+	}
+	.list {
+		display: grid;
+		gap: 1em;
+	}
+	.empty {
+		color: var(--text-soft);
+		text-align: center;
+		padding: 2em 0;
+	}
+</style>

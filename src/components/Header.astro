@@ -8,6 +8,7 @@ import HeaderLink from './HeaderLink.astro';
 		<h2><a href="/">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
 			<HeaderLink href="/">首页</HeaderLink>
+			<HeaderLink href="/works">全部</HeaderLink>
 			{COLLECTIONS.map((c) => <HeaderLink href={`/${c.name}`}>{c.label}</HeaderLink>)}
 			<HeaderLink href="/about">关于</HeaderLink>
 		</div>

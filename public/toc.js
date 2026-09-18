@@ -40,5 +40,9 @@
 			if (h.tagName === 'H3') a.className = 'sub';
 			toc.appendChild(a);
 		});
+
+		// 窄屏折叠目录（#toc-mobile）：同样填充
+		var tocMobile = document.getElementById('toc-mobile');
+		if (tocMobile) tocMobile.innerHTML = toc.innerHTML;
 	});
 })();

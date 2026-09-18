@@ -1,11 +1,16 @@
 ---
-// 站内搜索弹窗：首次打开时才懒加载 /pagefind/pagefind.js（构建产物内的本地索引）。
+// 站内搜索弹窗：全部/标题/正文三档模式（逻辑见 /search.js）。
 // 唤起方式：Header 的搜索按钮（data-search-open）或 Ctrl/Cmd+K。
 ---
 
 <div id="search-backdrop" hidden></div>
 <div id="search-dialog" hidden role="dialog" aria-modal="true" aria-label="站内搜索">
 	<input id="search-input" type="search" placeholder="搜索作品、公式、代码…" autocomplete="off" />
+	<div id="search-modes" role="group" aria-label="搜索范围">
+		<button type="button" class="mode active" data-mode="all">全部</button>
+		<button type="button" class="mode" data-mode="title">标题</button>
+		<button type="button" class="mode" data-mode="body">正文</button>
+	</div>
 	<div id="search-status" class="status"></div>
 	<div id="search-results"></div>
 </div>
@@ -46,34 +51,75 @@
 	#search-input:focus {
 		outline: 2px solid var(--accent);
 	}
-	.status {
-		margin: 0.5em 0.2em 0.3em;
+	#search-modes {
+		display: flex;
+		gap: 0.4em;
+		margin: 0.55em 0 0.1em;
+	}
+	#search-modes .mode {
+		padding: 0.1em 0.85em;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--bg);
+		color: var(--text-soft);
 		font-size: 0.82em;
+	}
+	#search-modes .mode:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	#search-modes .mode.active {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: var(--bg);
+	}
+	.status {
+		margin: 0.4em 0.2em 0.2em;
+		font-size: 0.8em;
 		color: var(--text-soft);
 	}
 	.hit {
-		display: block;
-		padding: 0.55em 0.7em;
-		border-radius: 8px;
+		display: flex;
+		align-items: baseline;
+		gap: 0.6em;
+		padding: 0.5em 0.6em;
+		border-bottom: 1px solid var(--border);
 		text-decoration: none;
 		color: var(--text);
+	}
+	.hit:last-child {
+		border-bottom: none;
 	}
 	.hit:hover {
 		background: var(--bg-soft);
 	}
+	.badge {
+		flex: none;
+		padding: 0.05em 0.55em;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		font-size: 0.74em;
+		color: var(--text-soft);
+		white-space: nowrap;
+	}
 	.hit-title {
-		display: block;
 		font-weight: 600;
+		line-height: 1.5;
 	}
 	.hit-excerpt {
 		display: block;
-		margin-top: 0.15em;
-		font-size: 0.84em;
+		flex-basis: 100%;
+		margin: 0.1em 0 0 0;
+		font-size: 0.8em;
 		color: var(--text-soft);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
-	.hit-excerpt :global(mark) {
+	.hit :global(mark) {
 		background: var(--accent-weak);
 		color: var(--accent);
+		font-weight: 700;
 	}
 	.empty {
 		padding: 1em 0.2em;

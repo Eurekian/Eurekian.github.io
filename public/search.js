@@ -1,10 +1,17 @@
-// 站内搜索（Pagefind 本地索引，首次打开才加载）
-// 独立外部脚本：动态 import 不经打包器改写，兼容严格 CSP（无 unsafe-eval）
+// 站内搜索：三种模式
+//   标题 — /titles.json 客户端子串匹配（精确，零漏报零误报）
+//   正文 — Pagefind 本地索引（中文按分词匹配，建议搜词组）
+//   全部 — 标题命中在前 + 正文命中去重合并
+// 结果渲染：每条一行 = [分类徽标] 标题（命中处高亮）；仅正文来源附一行短摘要。
 (function () {
 	'use strict';
 
+	var MODES = ['all', 'title', 'body'];
+	var MODE_LABELS = { all: '全部', title: '标题', body: '正文' };
+	var mode = 'all';
 	var pagefind = null;
-	var loading = false;
+	var pagefindLoading = false;
+	var titlesCache = null;
 	var debounceTimer = undefined;
 
 	function ready(fn) {
@@ -18,7 +25,8 @@
 		var input = document.getElementById('search-input');
 		var statusEl = document.getElementById('search-status');
 		var resultsEl = document.getElementById('search-results');
-		if (!backdrop || !dialog || !input) return;
+		var modeBar = document.getElementById('search-modes');
+		if (!backdrop || !dialog || !input || !modeBar) return;
 
 		function open() {
 			backdrop.hidden = false;
@@ -30,10 +38,12 @@
 			dialog.hidden = true;
 		}
 
+		/* ---------- 数据源 ---------- */
+
 		function ensurePagefind() {
 			if (pagefind) return Promise.resolve(pagefind);
-			if (loading) return Promise.resolve(null);
-			loading = true;
+			if (pagefindLoading) return Promise.resolve(null);
+			pagefindLoading = true;
 			return import('/pagefind/pagefind.js')
 				.then(function (m) {
 					pagefind = m;
@@ -44,41 +54,147 @@
 					return null;
 				})
 				.finally(function () {
-					loading = false;
+					pagefindLoading = false;
 				});
 		}
+
+		function ensureTitles() {
+			if (titlesCache) return Promise.resolve(titlesCache);
+			return fetch('/titles.json')
+				.then(function (r) {
+					return r.json();
+				})
+				.then(function (d) {
+					titlesCache = d.items || [];
+					return titlesCache;
+				})
+				.catch(function () {
+					statusEl.textContent = '标题索引加载失败，请刷新重试';
+					return null;
+				});
+		}
+
+		/* ---------- 两种检索 ---------- */
+
+		function searchTitleMode(q) {
+			return ensureTitles().then(function (items) {
+				if (!items) return [];
+				var ql = q.toLowerCase();
+				return items
+					.filter(function (i) {
+						return i.title.toLowerCase().indexOf(ql) !== -1;
+					})
+					.map(function (i) {
+						return { title: i.title, url: i.url, category: i.category, excerpt: null };
+					});
+			});
+		}
+
+		function searchBodyMode(q) {
+			return ensurePagefind().then(function (pf) {
+				if (!pf) return [];
+				return pf.search(q).then(function (res) {
+					return Promise.all(
+						res.results.slice(0, 8).map(function (r) {
+							return r.data().then(function (d) {
+								return {
+									title: (d.meta && d.meta.title) || '(无标题)',
+									url: d.url,
+									category: null,
+									excerpt: trimExcerpt(d.excerpt || '', q),
+								};
+							});
+						})
+					);
+				});
+			});
+		}
+
+		// 摘要压缩：去掉标签、以命中词附近为中心截 ~40 字、单行
+		function trimExcerpt(html, q) {
+			var text = html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+			var i = text.toLowerCase().indexOf(q.toLowerCase());
+			if (i > 18) text = '…' + text.slice(i - 14);
+			if (text.length > 52) text = text.slice(0, 52) + '…';
+			return text;
+		}
+
+		/* ---------- 渲染 ---------- */
 
 		function escapeHtml(s) {
 			return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		}
 
+		function highlight(title, q) {
+			var escaped = escapeHtml(title);
+			var i = title.toLowerCase().indexOf(q.toLowerCase());
+			if (i === -1) return escaped;
+			return (
+				escapeHtml(title.slice(0, i)) +
+				'<mark>' + escapeHtml(title.slice(i, i + q.length)) + '</mark>' +
+				escapeHtml(title.slice(i + q.length))
+			);
+		}
+
+		function render(items, q) {
+			statusEl.textContent = '共 ' + items.length + ' 条结果';
+			if (items.length === 0) {
+				resultsEl.innerHTML = '<div class="empty">没有匹配的内容。</div>';
+				return;
+			}
+			resultsEl.innerHTML = items
+				.map(function (i) {
+					var badge = i.category ? '<span class="badge">' + escapeHtml(i.category) + '</span>' : '';
+					var excerpt = i.excerpt
+						? '<span class="hit-excerpt">' + escapeHtml(i.excerpt) + '</span>'
+						: '';
+					return '<a class="hit" href="' + i.url + '">' + badge +
+						'<span class="hit-title">' + highlight(i.title, q) + '</span>' + excerpt + '</a>';
+				})
+				.join('');
+		}
+
 		function runSearch() {
 			var q = input.value.trim();
-			ensurePagefind().then(function (pf) {
-				if (!pf) return;
-				if (q.length < 2) {
-					statusEl.textContent = '';
-					resultsEl.innerHTML = '';
-					return;
-				}
-				statusEl.textContent = '搜索中…';
-				pf.search(q).then(function (res) {
-					statusEl.textContent = '共 ' + res.results.length + ' 条结果';
-					return Promise.all(res.results.slice(0, 8).map(function (r) { return r.data(); }));
-				}).then(function (items) {
-					resultsEl.innerHTML = items
-						.map(function (i) {
-							return (
-								'<a class="hit" href="' + i.url + '">' +
-								'<span class="hit-title">' + escapeHtml((i.meta && i.meta.title) || '(无标题)') + '</span>' +
-								'<span class="hit-excerpt">' + (i.excerpt || '') + '</span></a>'
-							);
-						})
-						.join('');
-					if (items.length === 0) resultsEl.innerHTML = '<div class="empty">没有匹配的内容。</div>';
+			if (q.length < 2) {
+				statusEl.textContent = '';
+				resultsEl.innerHTML = '';
+				return;
+			}
+			statusEl.textContent = '搜索中…';
+			var job;
+			if (mode === 'title') job = searchTitleMode(q);
+			else if (mode === 'body') job = searchBodyMode(q);
+			else {
+				// 全部：标题命中在前，正文命中去重合并
+				job = Promise.all([searchTitleMode(q), searchBodyMode(q)]).then(function (parts) {
+					var seen = {};
+					var merged = [];
+					parts[0].concat(parts[1]).forEach(function (item) {
+						if (seen[item.url]) return;
+						seen[item.url] = true;
+						merged.push(item);
+					});
+					return merged;
 				});
+			}
+			job.then(function (items) {
+				render(items, q);
 			});
 		}
+
+		/* ---------- 事件 ---------- */
+
+		modeBar.addEventListener('click', function (e) {
+			var btn = e.target && e.target.closest ? e.target.closest('button[data-mode]') : null;
+			if (!btn || MODES.indexOf(btn.dataset.mode) === -1) return;
+			mode = btn.dataset.mode;
+			modeBar.querySelectorAll('button').forEach(function (b) {
+				b.classList.toggle('active', b === btn);
+			});
+			if (input.value.trim().length >= 2) runSearch();
+			else input.focus();
+		});
 
 		document.addEventListener('click', function (e) {
 			var el = e.target && e.target.closest ? e.target.closest('[data-search-open]') : null;

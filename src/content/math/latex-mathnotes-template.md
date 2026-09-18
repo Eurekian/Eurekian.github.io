@@ -86,6 +86,8 @@ $$
 \dd{f} = \pdv{f}{x} \dd{x} + \pdv{f}{y} \dd{y}.
 $$
 
+二阶导数在 LaTeX 源里写作 `\dv[2]{y}{x}`；网页宏库未实现可选阶数参数，等价写法为 $\dfrac{\mathrm{d}^{2} y}{\mathrm{d} x^{2}}$。
+
 （本站已将这些 physics 记号定义为全局宏，写作时可直接使用。）
 
 ## 物理排版示例
@@ -156,9 +158,32 @@ $$
 \blacksquare
 $$
 
+:::example
+证明 $\Gamma(n+1) = n!$（$n \in \mathbb{N}^{*}$），其中 $\Gamma(z) = \int_{0}^{\infty} t^{z-1} \mathrm{e}^{-t} \dd{t}$。
+:::
+
+:::remark
+编号规则：定义、定理、引理、推论、命题、例共用同一编号序列；习题单独按节编号；解与注不编号。（网页版中定理框不编号，编号体系见 PDF 原版。）
+:::
+
 ## 图表插入
 
-模板中用 TikZ 直接绘制矢量图（无需外部文件），例如正弦函数 $y = \sin x$ 的图像；网页版不含 TikZ 引擎，请参看 PDF 原版第 5 节。表格采用三线表（`booktabs`）：
+模板中用 TikZ 直接绘制矢量图（无需外部文件）。下图为正弦函数 $y = \sin x$ 的图像（网页版由等效矢量图重现，PDF 原版为 TikZ 原图）：
+
+![正弦函数 y = sin x 的图像](/media/sine-function.svg)
+
+插入外部图片的写法（LaTeX 源内注释块）：
+
+```latex
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{demo.pdf}  % 文件放 figures/ 文件夹
+  \caption{外部图片示例。}
+  \label{fig:external}
+\end{figure}
+```
+
+表格采用三线表（`booktabs`）：
 
 | 符号 | 名称 | 数值 | 单位 |
 |------|------|------|------|

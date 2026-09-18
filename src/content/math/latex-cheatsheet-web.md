@@ -139,7 +139,15 @@ $$
 $$
 \oint_{\partial S} \mathbf{F} \cdot \dd{\mathbf{l}}, \qquad
 \iint_{D} f \dd{A}, \qquad
-\iiint_{V} \rho \dd{V}.
+\iiint_{V} \rho \dd{V},
+$$
+
+**变限积分求导**（莱布尼茨法则）：
+
+$$
+\dvop{x} \int_{a(x)}^{b(x)} f \dd{t}
+= f\!\left(b(x)\right) b'(x) - f\!\left(a(x)\right) a'(x)
++ \int_{a(x)}^{b(x)} \pdv{f}{x} \dd{t}.
 $$
 
 **三大积分定理**（记号 $\dd{\mathbf{A}} = \hat{\mathbf{n}} \dd{A}$）：
@@ -189,7 +197,11 @@ $$
 \Gamma\!\left( \tfrac{1}{2} \right) = \sqrt{\pi}.
 $$
 
-（$\ln N! = N \ln N - N + O(\ln N)$ 为斯特林公式。）
+**斯特林公式**（物理中常用 $\ln N! \approx N \ln N - N$）：
+
+$$
+\ln N! = N \ln N - N + O(\ln N).
+$$
 
 **傅里叶变换**（对称约定）与帕塞瓦尔恒等式：
 
@@ -224,6 +236,20 @@ $$
 行间省略号: \cdots  \vdots  \ddots ;  行内小矩阵: smallmatrix 环境
 ```
 
+含省略号的一般矩阵与增广矩阵（`array` 环境自己画竖线）：
+
+$$
+A = \begin{pmatrix}
+a_{11} & \cdots & a_{1n} \\
+\vdots & \ddots & \vdots \\
+a_{m1} & \cdots & a_{mn}
+\end{pmatrix},
+\qquad
+\left[\begin{array}{cc|c}
+1 & 2 & 3 \\ 4 & 5 & 6
+\end{array}\right].
+$$
+
 **常用记号**：
 
 $$
@@ -241,7 +267,8 @@ $$
 A \mathbf{v} = \lambda \mathbf{v}, \qquad
 \det(\lambda I - A) = 0, \qquad
 A = P D P^{-1}, \qquad
-A_{\text{对称}} = Q \Lambda Q^{\mathsf T}.
+A_{\text{对称}} = Q \Lambda Q^{\mathsf T}, \qquad
+\operatorname{rank} A + \dim \ker A = n .
 $$
 
 **复数记号**：$z = a + b\,\mathrm{i}$，$\abs{z}^{2} = z \bar{z}$，$\mathrm{e}^{\mathrm{i}\theta} = \cos\theta + \mathrm{i} \sin\theta$，欧拉公式逆用得 $\cos\theta = \dfrac{\mathrm{e}^{\mathrm{i}\theta} + \mathrm{e}^{-\mathrm{i}\theta}}{2}$。
@@ -338,6 +365,8 @@ $$
 \end{aligned}
 $$
 
+积分形式（对应地）：$\iint_{\partial V} \mathbf{E} \cdot \dd{\mathbf{A}} = Q_{\text{enc}} / \varepsilon_0$，$\oint_{\partial S} \mathbf{E} \cdot \dd{\mathbf{l}} = - \dvop{t} \iint_S \mathbf{B} \cdot \dd{\mathbf{A}}$ 等，结合前文三大积分定理即可互推。
+
 **量子力学**：
 
 $$
@@ -408,7 +437,7 @@ $$
 - 数值+单位：`\qty{9.81}{m/s^2}` 得 $g = \qty{9.81}{m/s^2}$；
 - 纯数值（自动千分位）与纯单位：`\num{299792458}` 得 299 792 458，`\unit{kg.m/s}` 得 kg·m/s；
 - 角度：`\ang{90}` 得 $90^\circ$；
-- 不确定度：`\qty{9.8 +- 0.1}{m/s^2}` 得 $\qty{9.8 \pm 0.1}{m/s^2}$。
+- 不确定度：`\qty{9.8 +- 0.1}{m/s^2}` 默认得紧凑式 $g = \qty{9.8 \pm 0.1}{m/s^2}$；加选项 `[separate-uncertainty=true]` 则显式用 $\pm$ 分隔。
 
 ## 多行公式环境速查
 
@@ -421,6 +450,17 @@ $$
 | `cases` | 分段函数 / 分类讨论 |
 | `subequations` | 编号 (1a) (1b) 型子公式 |
 | `aligned` / `gathered` | 行内/表格中嵌套的多行公式 |
+
+align 完整示例（含编号控制）：
+
+```latex
+\begin{align}
+  \int_0^\infty \mathrm{e}^{-x^2} \dd{x}
+    &= \frac{1}{2} \int_0^\infty t^{-1/2} \mathrm{e}^{-t} \dd{t} \notag\\
+    &= \frac{1}{2} \Gamma\!\left(\frac{1}{2}\right) = \frac{\sqrt{\pi}}{2}
+\end{align}
+% \notag 或 \nonumber 取消本行编号; 整块不编号用 align*
+```
 
 ## 定理环境与交叉引用
 

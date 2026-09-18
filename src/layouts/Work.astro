@@ -77,42 +77,7 @@ const { title, description, pubDate, updatedDate, tags, math, githubUrl, pdfUrl 
 	{math && <link rel="stylesheet" href="/katex/katex.min.css" />}
 </slot>
 
-<script>
-	// 由正文 h2/h3 构建目录侧栏（构建产物上运行，零依赖）
-	function buildToc() {
-		const content = document.getElementById('content');
-		const toc = document.getElementById('toc');
-		const aside = document.querySelector('.toc');
-		if (!content || !toc || !aside) return;
-
-		const headings = Array.from(content.querySelectorAll('h2, h3'));
-		if (headings.length === 0) {
-			aside.setAttribute('hidden', '');
-			return;
-		}
-		const usedIds = new Set<string>();
-		for (const h of headings) {
-			if (!h.id) {
-				const base = (h.textContent || '').trim().replace(/\s+/g, '-').slice(0, 40) || 'section';
-				let id = base;
-				let n = 1;
-				while (usedIds.has(id)) id = `${base}-${n++}`;
-				usedIds.add(id);
-				h.id = encodeURIComponent(id);
-			} else {
-				usedIds.add(h.id);
-			}
-		}
-		for (const h of headings) {
-			const a = document.createElement('a');
-			a.href = `#${h.id}`;
-			a.textContent = h.textContent || '';
-			a.className = h.tagName === 'H3' ? 'sub' : '';
-			toc.appendChild(a);
-		}
-	}
-	buildToc();
-</script>
+<script is:inline src="/toc.js" defer></script>
 
 <style>
 	article {

@@ -45,25 +45,7 @@ const tags = [...new Set(works.flatMap((w) => w.data.tags))].sort();
 	</div>
 </Base>
 
-<script>
-	// 列表页标签筛选：纯客户端，零依赖
-	const group = document.querySelector('.tag-filter');
-	const cards = document.querySelectorAll('#work-list .card');
-	group?.addEventListener('click', (event) => {
-		const target = event.target instanceof Element ? target_closest(event.target) : null;
-		if (!target) return;
-		const tag = target.dataset.tag;
-		if (!tag) return;
-		group.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === target));
-		cards.forEach((card) => {
-			const tags = (card.getAttribute('data-tags') ?? '').split(' ').filter(Boolean);
-			(card as HTMLElement).style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
-		});
-	});
-	function target_closest(el: Element): HTMLElement | null {
-		return el.closest('button[data-tag]');
-	}
-</script>
+<script is:inline src="/filter.js" defer></script>
 
 <style>
 	h1 {

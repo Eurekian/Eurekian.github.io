@@ -15,7 +15,7 @@ const { title, description, pubDate, tags, math } = entry.data;
 <a class="card" href={href} data-tags={tags.join(' ')}>
 	<div class="meta">
 		<span class="label">{collectionLabel}</span>
-		<time datetime={pubDate.toISOString()}><FormattedDate date={pubDate} /></time>
+		<FormattedDate date={pubDate} />
 		{math && <span class="badge" title="含数学公式">∑</span>}
 	</div>
 	<h3>{title}</h3>

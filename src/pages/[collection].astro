@@ -43,9 +43,8 @@ const tags = [...new Set(works.flatMap((w) => w.data.tags))].sort();
 		}
 		{works.length === 0 && <p class="empty">该分类暂无公开作品。</p>}
 	</div>
+	<script is:inline src="/filter.js" defer></script>
 </Base>
-
-<script is:inline src="/filter.js" defer></script>
 
 <style>
 	h1 {

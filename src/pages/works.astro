@@ -50,9 +50,8 @@ const tags = [...new Set(all.flatMap((w) => w.entry.data.tags))].sort();
 		}
 		{all.length === 0 && <p class="empty">还没有公开作品。</p>}
 	</div>
+	<script is:inline src="/filter.js" defer></script>
 </Base>
-
-<script is:inline src="/filter.js" defer></script>
 
 <style>
 	h1 {

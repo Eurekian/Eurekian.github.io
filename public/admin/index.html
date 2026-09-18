@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="noindex" />
+		<title>管理后台 · Eurekian的博客</title>
+	</head>
+	<body>
+		<!--
+			Sveltia CMS（自托管 ESM 版）。配置自动读取同目录 config.yml。
+			ESM 模式下 document.currentScript 为 null，自动初始化不会触发，
+			需显式导入并调用 init()。
+		-->
+		<script type="module">
+			import { init } from './lib/sveltia-cms.mjs';
+			init();
+		</script>
+	</body>
+</html>

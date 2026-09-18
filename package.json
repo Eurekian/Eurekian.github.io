@@ -6,8 +6,8 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node scripts/copy-katex.mjs && astro dev",
-    "build": "node scripts/copy-katex.mjs && astro build && pagefind --site dist",
+    "dev": "node scripts/copy-katex.mjs && node scripts/copy-admin.mjs && astro dev",
+    "build": "node scripts/copy-katex.mjs && node scripts/copy-admin.mjs && astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -16,6 +16,7 @@
     "@astrojs/mdx": "^8.0.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
+    "@sveltia/cms": "^0.215.0",
     "astro": "^7.3.3",
     "katex": "^0.18.7",
     "rehype-katex": "^7.0.1",

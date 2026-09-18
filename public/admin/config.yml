@@ -1,0 +1,79 @@
+# Sveltia CMS 配置（与 src/content.config.ts 的 zod schema 一一对应）
+# 登录方式：GitHub 细粒度 Personal Access Token（登录框中直接粘贴，token 只存于本人浏览器）
+
+site_url: https://eurekian.github.io
+display_url: https://eurekian.github.io
+logo_url: https://eurekian.github.io/favicon.svg
+locale: zh-Hans
+
+backend:
+  name: github
+  repo: Eurekian/Eurekian.github.io
+  branch: main
+
+# 媒体（图片）上传目录；PDF 等大附件走 git 放入 public/files/
+media_folder: public/media
+public_folder: /media
+
+collections:
+  - name: math
+    label: 数学
+    folder: src/content/math
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    sortable_fields: [pubDate, title]
+    fields: &work_fields
+      - { label: 标题, name: title, widget: string }
+      - { label: 简介, name: description, widget: text, hint: 列表页与搜索摘要使用的一段话 }
+      - { label: 发布日期, name: pubDate, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+      - { label: 更新日期, name: updatedDate, widget: datetime, required: false, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+      - { label: 标签, name: tags, widget: list, required: false, hint: 每行一个，如「计算物理」「LaTeX」 }
+      - { label: 含数学公式, name: math, widget: boolean, default: true, required: false, hint: 勾选后页面才加载公式样式；纯文字作品请取消勾选 }
+      - { label: 源码仓库链接, name: githubUrl, widget: string, required: false, hint: 'https:// 开头的完整 URL，留空则不显示「查看源码」按钮' }
+      - { label: PDF 附件路径, name: pdfUrl, widget: string, required: false, hint: '如 /files/xxx.pdf（PDF 需经 git 放入 public/files/）' }
+      - { label: 草稿, name: draft, widget: boolean, default: false, required: false, hint: 勾选后不对外展示，也不进搜索与 RSS }
+      - { label: 正文, name: body, widget: markdown, hint: '公式用 $...$ 与 $$...$$；定理框写 :::theorem{title="标题"} … :::' }
+
+  - name: physics
+    label: 物理
+    folder: src/content/physics
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    sortable_fields: [pubDate, title]
+    fields: *work_fields
+
+  - name: code
+    label: 代码
+    folder: src/content/code
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    sortable_fields: [pubDate, title]
+    fields: *work_fields
+
+  - name: essays
+    label: 文章
+    folder: src/content/essays
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    sortable_fields: [pubDate, title]
+    fields: *work_fields
+
+  - name: settings
+    label: 个人信息
+    files:
+      - name: profile
+        label: 站点资料
+        file: src/content/settings/profile.json
+        fields:
+          - { label: 姓名, name: name, widget: string }
+          - { label: 标语, name: tagline, widget: string, hint: 首页名字下方的一行，如「数学 · 物理 · 计算 · 文章」 }
+          - { label: 简介, name: bio, widget: text, hint: 首页与关于页的自我介绍 }
+          - { label: 研究方向, name: research, widget: list, required: false }
+          - { label: 邮箱, name: email, widget: string, required: false }
+          - label: 社交链接
+            name: socials
+            widget: list
+            required: false
+            fields:
+              - { label: 名称, name: label, widget: string, hint: 如 GitHub、知乎、B 站 }
+              - { label: 链接, name: url, widget: string, hint: 'https:// 开头' }

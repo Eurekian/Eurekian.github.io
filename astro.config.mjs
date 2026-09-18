@@ -12,6 +12,11 @@ import { remarkContainers } from './src/lib/remark-containers.mjs';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://eurekian.github.io',
+	// 旧网址跳转（静态模式生成 meta-refresh 页）：两篇 LaTeX 工具文从数学移入代码
+	redirects: {
+		'/math/latex-cheatsheet-web': '/code/latex-cheatsheet-web/',
+		'/math/latex-mathnotes-template': '/code/latex-mathnotes-template/',
+	},
 	integrations: [mdx(), sitemap()],
 	markdown: {
 		remarkPlugins: [remarkMath, remarkDirective, remarkContainers],

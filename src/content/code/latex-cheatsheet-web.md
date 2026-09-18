@@ -11,7 +11,7 @@ pdfUrl: /files/latex-cheatsheet.pdf
 draft: false
 ---
 
-配套 [MathNotes 模板](/math/latex-mathnotes-template/) 的数理常用 LaTeX 代码速查手册网页版：每个条目左侧为**渲染效果**（站内 KaTeX 构建时渲染）、右侧为**源代码**，复制代码即可复现公式。PDF 版（适合打印）见[这里](/files/latex-cheatsheet.pdf)。
+配套 [MathNotes 模板](/code/latex-mathnotes-template/) 的数理常用 LaTeX 代码速查手册网页版：每个条目左侧为**渲染效果**（站内 KaTeX 构建时渲染）、右侧为**源代码**，复制代码即可复现公式。PDF 版（适合打印）见[这里](/files/latex-cheatsheet.pdf)。
 
 ## 公式排版基础
 

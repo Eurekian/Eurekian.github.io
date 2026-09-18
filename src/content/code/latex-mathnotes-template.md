@@ -205,7 +205,7 @@ latexmk -xelatex main.tex
 ```
 
 - [下载模板 PDF 原版](/files/mathnotes-template.pdf)（含 TikZ 插图、页眉与编号系统的完整效果）
-- [配套速查手册网页版](/math/latex-cheatsheet-web/) · [速查手册 PDF](/files/latex-cheatsheet.pdf)
+- [配套速查手册网页版](/code/latex-cheatsheet-web/) · [速查手册 PDF](/files/latex-cheatsheet.pdf)
 
 **参考文献**
 

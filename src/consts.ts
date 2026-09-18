@@ -9,7 +9,7 @@ export const COLLECTIONS = [
 	{
 		name: 'math',
 		label: '数学',
-		description: '数学笔记、定理与证明、LaTeX 模板与速查手册',
+		description: '数学笔记、定理与证明',
 	},
 	{
 		name: 'physics',
@@ -19,7 +19,7 @@ export const COLLECTIONS = [
 	{
 		name: 'code',
 		label: '代码',
-		description: '代码作品、脚本与工具',
+		description: '代码作品、脚本与工具、LaTeX 模板',
 	},
 	{
 		name: 'essays',

@@ -1,5 +1,7 @@
 ---
 // 站内搜索弹窗：全部/标题/正文三档模式（逻辑见 /search.js）。
+// 结果为独立卡片（仅徽标+标题）；悬停/聚焦时行右侧浮出内容预览（#search-popover，
+// 由脚本挂到 body 并以 fixed 定位，避免被弹窗滚动容器裁剪）。
 // 唤起方式：Header 的搜索按钮（data-search-open）或 Ctrl/Cmd+K。
 ---
 
@@ -14,6 +16,7 @@
 	<div id="search-status" class="status"></div>
 	<div id="search-results"></div>
 </div>
+<div id="search-popover" class="popover" hidden></div>
 
 <script is:inline src="/search.js" defer></script>
 
@@ -78,19 +81,26 @@
 		font-size: 0.8em;
 		color: var(--text-soft);
 	}
+	#search-results {
+		display: grid;
+		gap: 0.55em;
+		margin-top: 0.3em;
+	}
 	.hit {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
 		gap: 0.6em;
-		padding: 0.5em 0.6em;
-		border-bottom: 1px solid var(--border);
+		padding: 0.55em 0.75em;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		background: var(--bg);
 		text-decoration: none;
 		color: var(--text);
+		transition: border-color 0.12s ease;
 	}
-	.hit:last-child {
-		border-bottom: none;
-	}
-	.hit:hover {
+	.hit:hover,
+	.hit:focus-visible {
+		border-color: var(--accent);
 		background: var(--bg-soft);
 	}
 	.badge {
@@ -106,16 +116,6 @@
 		font-weight: 600;
 		line-height: 1.5;
 	}
-	.hit-excerpt {
-		display: block;
-		flex-basis: 100%;
-		margin: 0.1em 0 0 0;
-		font-size: 0.8em;
-		color: var(--text-soft);
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
 	.hit :global(mark) {
 		background: var(--accent-weak);
 		color: var(--accent);
@@ -125,5 +125,39 @@
 		padding: 1em 0.2em;
 		color: var(--text-soft);
 		text-align: center;
+	}
+
+	/* 悬停预览浮层（fixed，挂在 body 下；样式经 data 属性作用域仍然生效） */
+	.popover {
+		position: fixed;
+		z-index: 60;
+		max-width: 320px;
+		max-height: 40vh;
+		overflow-y: auto;
+		padding: 0.7em 0.9em;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		background: var(--bg);
+		box-shadow: var(--box-shadow);
+		font-size: 0.88em;
+		pointer-events: none;
+	}
+	.pop-cat {
+		display: inline-block;
+		margin-bottom: 0.3em;
+		padding: 0.02em 0.55em;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		font-size: 0.82em;
+		color: var(--text-soft);
+	}
+	.pop-title {
+		font-weight: 700;
+		margin-bottom: 0.35em;
+		line-height: 1.45;
+	}
+	.pop-text {
+		color: var(--text-soft);
+		line-height: 1.6;
 	}
 </style>

@@ -12,6 +12,8 @@ export async function GET() {
 					title: e.data.title,
 					url: `/${c.name}/${e.id}/`,
 					category: c.label,
+					// 悬停预览用：标题命中时展示文章简介
+					description: e.data.description,
 				}));
 			})
 		)

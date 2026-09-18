@@ -13,6 +13,7 @@
 	var pagefindLoading = false;
 	var titlesCache = null;
 	var debounceTimer = undefined;
+	var currentItems = [];
 
 	function ready(fn) {
 		if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
@@ -36,6 +37,7 @@
 		function close() {
 			backdrop.hidden = true;
 			dialog.hidden = true;
+			hidePopover();
 		}
 
 		/* ---------- 数据源 ---------- */
@@ -136,23 +138,88 @@
 			);
 		}
 
+		// 每条结果独立卡片：分类徽标 + 标题。悬停/聚焦时由浮层展示关联内容。
 		function render(items, q) {
+			currentItems = items;
 			statusEl.textContent = '共 ' + items.length + ' 条结果';
 			if (items.length === 0) {
 				resultsEl.innerHTML = '<div class="empty">没有匹配的内容。</div>';
 				return;
 			}
 			resultsEl.innerHTML = items
-				.map(function (i) {
+				.map(function (i, idx) {
 					var badge = i.category ? '<span class="badge">' + escapeHtml(i.category) + '</span>' : '';
-					var excerpt = i.excerpt
-						? '<span class="hit-excerpt">' + escapeHtml(i.excerpt) + '</span>'
-						: '';
-					return '<a class="hit" href="' + i.url + '">' + badge +
-						'<span class="hit-title">' + highlight(i.title, q) + '</span>' + excerpt + '</a>';
+					return '<a class="hit" href="' + i.url + '" data-idx="' + idx + '">' + badge +
+						'<span class="hit-title">' + highlight(i.title, q) + '</span></a>';
 				})
 				.join('');
 		}
+
+		/* ---------- 悬停浮层（行右侧，fixed 定位挂在 body，避免被弹窗滚动容器裁剪） ---------- */
+
+		var popover = document.getElementById('search-popover');
+		var canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+
+		function showPopover(item, row) {
+			if (!popover || !canHover || !item) return;
+			var body = '';
+			if (item.category) body += '<div class="pop-cat">' + escapeHtml(item.category) + '</div>';
+			body += '<div class="pop-title">' + escapeHtml(item.title) + '</div>';
+			var text = item.excerpt || item.description || '';
+			if (text) body += '<div class="pop-text">' + escapeHtml(text) + '</div>';
+			popover.innerHTML = body;
+			popover.hidden = false;
+
+			var r = row.getBoundingClientRect();
+			var gap = 10;
+			var margin = 8;
+			var rightSpace = window.innerWidth - margin - (r.right + gap);
+			var leftSpace = r.left - gap - margin;
+			var pw;
+			var left;
+			if (rightSpace >= 180) {
+				// 右侧空间足够：行右侧浮出（宽度按剩余空间收缩，上限 320）
+				pw = Math.min(320, rightSpace);
+				left = r.right + gap;
+			} else if (leftSpace >= 180) {
+				pw = Math.min(320, leftSpace);
+				left = r.left - gap - pw;
+			} else {
+				// 两侧都窄（极窄视口）：贴边全宽
+				pw = window.innerWidth - 2 * margin;
+				left = margin;
+			}
+			popover.style.maxWidth = pw + 'px';
+			var top = Math.max(margin, Math.min(r.top, window.innerHeight - 80));
+			popover.style.left = left + 'px';
+			popover.style.top = top + 'px';
+		}
+
+		function hidePopover() {
+			if (popover) popover.hidden = true;
+		}
+
+		if (popover) document.body.appendChild(popover);
+
+		resultsEl.addEventListener('mouseover', function (e) {
+			var row = e.target && e.target.closest ? e.target.closest('a.hit') : null;
+			if (!row) return;
+			var idx = parseInt(row.dataset.idx, 10);
+			showPopover(currentItems[idx], row);
+		});
+		resultsEl.addEventListener('mouseout', function (e) {
+			var row = e.target && e.target.closest ? e.target.closest('a.hit') : null;
+			if (row) hidePopover();
+		});
+		resultsEl.addEventListener('focusin', function (e) {
+			var row = e.target && e.target.closest ? e.target.closest('a.hit') : null;
+			if (!row) return;
+			var idx = parseInt(row.dataset.idx, 10);
+			showPopover(currentItems[idx], row);
+		});
+		resultsEl.addEventListener('focusout', hidePopover);
+		window.addEventListener('scroll', hidePopover, true);
+		window.addEventListener('resize', hidePopover);
 
 		function runSearch() {
 			var q = input.value.trim();

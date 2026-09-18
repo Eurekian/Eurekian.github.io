@@ -11,6 +11,7 @@ const LABELS = {
 	proposition: '命题',
 	definition: '定义',
 	example: '例',
+	problem: '习题',
 	remark: '注',
 	note: '提示',
 	warning: '注意',

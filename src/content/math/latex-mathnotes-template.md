@@ -158,7 +158,7 @@ $$
 \blacksquare
 $$
 
-:::example
+:::problem
 证明 $\Gamma(n+1) = n!$（$n \in \mathbb{N}^{*}$），其中 $\Gamma(z) = \int_{0}^{\infty} t^{z-1} \mathrm{e}^{-t} \dd{t}$。
 :::
 

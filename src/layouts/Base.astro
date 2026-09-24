@@ -25,6 +25,11 @@ const { title, description, wide = false } = Astro.props;
 		<slot name="head" />
 	</head>
 	<body>
+		{/* 效果图预览：东方Project 侧边装饰（未提交，待定稿） */}
+		<div class="side-deco day right" aria-hidden="true"></div>
+		<div class="side-deco day left" aria-hidden="true"></div>
+		<div class="side-deco night right" aria-hidden="true"></div>
+		<div class="side-deco night left" aria-hidden="true"></div>
 		<Header />
 		<main class={wide ? 'wide' : ''} data-pagefind-body>
 			<slot />
@@ -44,5 +49,54 @@ const { title, description, wide = false } = Astro.props;
 	}
 	main.wide {
 		width: 60em;
+	}
+
+	/* —— 东方 Project 侧边装饰（效果图阶段）—— */
+	.side-deco {
+		position: fixed;
+		bottom: 0;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: bottom;
+		pointer-events: none;
+		user-select: none;
+		z-index: 0;
+		opacity: 0.96;
+	}
+	/* 内容层压在装饰之上（正文永远在最前） */
+	:global(body > main),
+	:global(body > header),
+	:global(body > footer) {
+		position: relative;
+		z-index: 1;
+	}
+	.side-deco.right {
+		right: 0;
+		width: min(24vw, 440px);
+		height: min(88vh, 900px);
+	}
+	.side-deco.left {
+		left: 1vw;
+		width: min(15vw, 260px);
+		height: min(52vh, 520px);
+	}
+	/* 白天：古明地恋 + 玫瑰 */
+	.side-deco.day.right { background-image: url('/deco/day-right.webp'); }
+	.side-deco.day.left { background-image: url('/deco/day-left-books.webp'); }
+	/* 黑夜：帕秋莉 + 书堆 */
+	/* 夜间：帕秋莉 + 书堆（月光晕已烘入素材，顶边渐隐，原色保留） */
+	.side-deco.night.right { background-image: url('/deco/night-right-v5.webp?v=5'); }
+	.side-deco.night.left { background-image: url('/deco/night-left-v5.webp?v=5'); }
+	/* 主题切换显隐 */
+	.side-deco.day { display: none; }
+	:root:not([data-theme='dark']) .side-deco.day { display: block; }
+	:root[data-theme='dark'] .side-deco.night { display: block; }
+	.side-deco.night { display: none; }
+	/* 窄屏隐藏，避免挤占阅读区 */
+	@media (max-width: 1439px) {
+		.side-deco { display: none !important; }
+	}
+	@media print {
+		.side-deco { display: none !important; }
 	}
 </style>

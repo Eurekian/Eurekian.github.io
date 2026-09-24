@@ -36,6 +36,19 @@ const d = (await getEntry('settings', 'profile')).data;
 			)
 		}
 	</div>
+	<div class="card credits">
+		<h2>图片来源与致谢</h2>
+		<p>
+			本站左右两侧的装饰插画使用的是东方 Project 相关二次创作作品：
+		</p>
+		<ul>
+			<li>夜间模式：帕秋莉·诺蕾姬与书堆，画师 <code>@Kosu</code>（2026.8）。</li>
+			<li>白天模式：古明地恋与书堆，画师信息整理中，确认后补全。</li>
+		</ul>
+		<p>
+			东方 Project 原作及角色版权归上海爱丽丝幻乐团（ZUN）所有，本站为非商业个人用途，仅在页面边缘做装饰性展示。若您是权利人并希望本站调整或撤下相关图片，请通过上方联系方式告知。
+		</p>
+	</div>
 	<p class="note">个人信息可在管理后台随时修改，修改后站点自动更新。</p>
 </Base>
 
@@ -80,5 +93,21 @@ const d = (await getEntry('settings', 'profile')).data;
 		margin-top: 1.5em;
 		color: var(--text-soft);
 		font-size: 0.85em;
+	}
+	.credits {
+		margin-top: 1.5em;
+		font-size: 0.9em;
+	}
+	.credits h2 {
+		font-size: 1.1em;
+		margin-bottom: 0.5em;
+	}
+	.credits ul {
+		margin: 0.5em 0;
+		padding-left: 1.4em;
+	}
+	.credits p {
+		margin: 0.4em 0;
+		color: var(--text-soft);
 	}
 </style>

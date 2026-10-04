@@ -31,11 +31,14 @@ export default defineConfig({
 			],
 		],
 		shikiConfig: {
-			// 双主题：CSS 变量切换，深浅色跟随站点主题（见 global.css）
+			// 双主题：只输出 CSS 变量（不写字面内联色），深浅色由样式表随站点主题切换（见 global.css）
+			// defaultColor 必须为 false：否则 Shiki 会把浅色写进内联 color，
+			// 内联样式优先级高于样式表，夜间模式的颜色切换将永远失效。
 			themes: {
 				light: 'github-light',
 				dark: 'github-dark',
 			},
+			defaultColor: false,
 		},
 	},
 	fonts: [
